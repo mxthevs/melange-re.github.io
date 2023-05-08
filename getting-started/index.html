@@ -82,6 +82,22 @@
             
             <li class="nav-item" data-level="1"><a href="#getting-started" class="nav-link">Getting started</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#install-opam" class="nav-link">Install opam</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#template" class="nav-link">Template</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#editor-integration" class="nav-link">Editor integration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#alternative-package-managers-experimental" class="nav-link">Alternative package managers (experimental)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -90,7 +106,41 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="getting-started">Getting started</h1>
-<p><em>TODO: Install opam, editor config, templates</em></p></div>
+<p>Get up and running with Melange in no time!</p>
+<hr />
+<h2 id="install-opam">Install opam</h2>
+<p>To work with Melange, you need to install <a href="https://opam.ocaml.org/">opam</a>, a
+source-based package manager for OCaml. Instructions for installing opam on
+different operating systems can be found at the opam <a href="https://opam.ocaml.org/doc/Install.html">install
+page</a>.</p>
+<h2 id="template">Template</h2>
+<p>The easiest way to get started with Melange is by using the
+<a href="https://github.com/melange-re/melange-opam-template">melange-opam-template</a>.
+Follow the instructions in the <a href="https://github.com/melange-re/melange-opam-template/blob/main/README.md">readme
+file</a>
+to configure the <a href="https://opam.ocaml.org/blog/opam-local-switches/">local opam
+switch</a> and download the
+necessary dependencies to build the project.</p>
+<h2 id="editor-integration">Editor integration</h2>
+<p>Melange has plugins for many editors, but the most actively maintained are for
+Visual Studio Code, Emacs, and Vim.</p>
+<p>For Visual Studio Code, install the <a href="https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform">OCaml Platform Visual Studio Code
+extension</a>
+from the Visual Studio Marketplace. When you load an OCaml source file for the
+first time, you may be prompted to select the toolchain in use. Select the
+version of OCaml you are using from the list, such as 4.14.1. Further
+instructions for configuration can be found in the <a href="https://github.com/ocamllabs/vscode-ocaml-platform#setting-up-the-extension-for-your-project">extension
+repository</a>.</p>
+<p>For Emacs and Vim, the configuration may vary depending on the case, and there
+are several options available. You can read about them in the <a href="http://ocamlverse.net/content/editor_setup.html">editor setup
+page</a> of the OCamlverse
+documentation site.</p>
+<h2 id="alternative-package-managers-experimental">Alternative package managers (experimental)</h2>
+<p>Although the recommended setup for Melange projects is with opam, Melange can
+also be used with other package managers, such as <a href="https://esy.sh/">esy</a> and
+<a href="https://github.com/NixOS/nix">Nix</a>. There is also a <a href="https://github.com/melange-re/melange-esy-template">Melange project template
+for esy</a> available, similar
+in spirit to the Melange opam template mentioned above.</p></div>
             </div>
         </div>
 
