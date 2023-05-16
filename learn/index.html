@@ -1,750 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Learn - Melange</title>
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
-        <link href="../css/extra.css" rel="stylesheet">
-
-        <script src="../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/ocaml.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" href="..">Melange</a>
-                <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Expanded navigation -->
-                <div id="navbar-collapse" class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li class="navitem">
-                                <a href=".." class="nav-link">Home</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../getting-started/" class="nav-link">Getting Started</a>
-                            </li>
-                            <li class="navitem active">
-                                <a href="./" class="nav-link">Learn</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../try/" class="nav-link">Try</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../community/" class="nav-link">Community</a>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li class="nav-item">
-                                <a rel="prev" href="../getting-started/" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="../try/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
-            <span class="fa fa-angle-down"></span>
-        </button>
-    </div>
-
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Learn - Melange</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/extra.css" rel="stylesheet" />
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
-        <ul class="nav flex-column">
-            
-            <li class="nav-item" data-level="1"><a href="#learn" class="nav-link">Learn</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#new-to-ocaml" class="nav-link">New to OCaml?</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#why-melange" class="nav-link">Why Melange</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#package-management" class="nav-link">Package management</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#build-system" class="nav-link">Build system</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#communicate-with-javascript" class="nav-link">Communicate with JavaScript</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#additions-to-ocaml" class="nav-link">Additions to OCaml</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#melange-for-x-users" class="nav-link">Melange for X users</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-              </ul>
-            </li>
-        </ul>
-    </div>
-</div></div>
-                    <div class="col-md-9" role="main">
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Learn";
+        var mkdocs_page_input_path = "learn.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/ocaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
 
-<h1 id="learn">Learn</h1>
-<h2 id="new-to-ocaml">New to OCaml?</h2>
-<p>As a backend for the OCaml compiler, Melange shares many similarities with the
-OCaml language. Nevertheless, there are some notable differences between the
-two. This documentation aims to clarify these distinctions. For features that
-Melange inherits from OCaml, readers will be directed to the main OCaml
-documentation.</p>
-<p>If you are completely new to OCaml, you might want to get familiar first with
-the language, there are <a href="https://ocaml.org/docs">plenty of resources available</a>,
-but we recommend the following tutorials from the official OCaml website:</p>
-<ul>
-<li><a href="https://ocaml.org/docs/first-hour">A First Hour With OCaml</a></li>
-<li><a href="https://ocaml.org/problems">OCaml Exercises</a></li>
-</ul>
-<h2 id="why-melange">Why Melange</h2>
-<p>OCaml offers an industrial-strength, state-of-the-art type system and provides
-type inference with very few type annotations, proving invaluable in managing
-large projects.</p>
-<p>JavaScript is one of the most pervasive platforms to deploy and run software.
-Thanks to years of efforts to improve the different VMs available, the
-JavaScript code running on browsers and other environments is heavily optimized
-and can support use cases for large products and tools.</p>
-<p>Melange helps developers and companies bring the advantages of the OCaml
-platform to users of the Web platform in a way that makes it easy for developers
-to integrate with both ecosystems.</p>
-<h3 id="a-bit-of-history">A bit of history</h3>
-<p>To better understand where Melange comes from, it might help to go through some
-of the related projects that have appeared over the last decade or so.</p>
-<h4 id="js_of_ocaml">Js_of_ocaml</h4>
-<p><a href="https://github.com/ocsigen/js_of_ocaml/">Js_of_ocaml</a> is another OCaml to
-JavaScript compiler that was made public in 2011. In <a href="https://www.irif.fr/~balat/publications/vouillon_balat-js_of_ocaml.pdf">the presentation
-paper</a>
-published in 2013, it’s explicitly mentioned that one of its design goals was to
-remain as compatible as possible with the OCaml compiler, without requiring a
-lot of maintenance work, as the OCaml community was not excessively large at the
-time.</p>
-<p>To achieve this goal, Js_of_ocaml picks the bytecode generated by OCaml <a href="https://ocaml.org/manual/comp.html">batch
-compilation</a> and generates JavaScript from
-it. OCaml bytecode has a very stable interface, so Js_of_ocaml can easily
-upgrade to new versions of the compiler. Due to this design decision, it can
-also remain compatible with most of the OCaml ecosystem, as long as the tools or
-libraries don’t rely on C code.</p>
-<p>The downside of using bytecode is that it gets harder to communicate with
-existing JavaScript code. For example, a Js_of_ocaml string is not compiled as a
-JavaScript string, so some conversion is needed for this and other types.</p>
-<p>Another downside is that the resulting JavaScript is hard to read, as it is
-converted from a low-level representation like bytecode.</p>
-<h4 id="bucklescript">BuckleScript</h4>
-<p>Then, in 2016, Bob Zhang suggests <a href="https://github.com/ocsigen/js_of_ocaml/issues/338">on a Js_of_ocaml repository
-issue</a> the possibility to
-start converting to JavaScript from an earlier stage of the compilation process,
-instead of using bytecode. This proposal fundamentally diverges from Js_of_ocaml
-original design and goals, so he starts working on what will become
-BuckleScript.</p>
-<p>BuckleScript gets some inspiration from Js_of_ocaml, for example in the way that
-JavaScript objects are represented with <code>Js.t</code>. But it differs from Js_of_ocaml
-in many ways: it can generate more readable and lighter code. It also generates
-one <code>.js</code> file per module, which makes it easier to integrate with existing
-JavaScript codebases. BuckleScript puts a big emphasis on communicating with
-JavaScript code through a rich collection of attributes applied to <code>external</code>
-primitives.</p>
-<h4 id="reason">Reason</h4>
-<p>Around the same year, a project called <a href="https://reasonml.github.io/">Reason</a>
-appears at Facebook. Led by Jordan Walke, the idea is to create an alternate
-syntax for OCaml that is closer to C and JavaScript. Even if Reason has no take
-on which platform the code is deployed —native applications binaries, or web
-applications using JavaScript as a target language—, BuckleScript adds first
-class support for Reason from early on. At that point, it becomes evident that
-the combination of Reason with BuckleScript is a great match: BuckleScript
-provides tools and infrastructure to work with JavaScript ecosystem, while
-Reason allows developers to write their programs in a syntax they are familiar
-with.</p>
-<p>Over time, and with help of other Facebook employees and the community providing
-bindings to pervasive JavaScript libraries like React.js with
-<a href="https://github.com/reasonml/reason-react/"><code>reason-react</code></a>, the combination of
-Reason and BuckleScript gains adoption.</p>
-<h4 id="bucklescript-gets-rebranded">BuckleScript gets rebranded</h4>
-<p>However, at some point the goals of both BuckleScript and Reason projects become
-harder to reconcile. In August 2020, the BuckleScript team decides to rename to
-ReScript, stops adding support for the latest versions of the Reason parser, and
-replaces it with a new parser that changes the syntax. The reasons for the
-rebranding are explained in <a href="https://rescript-lang.org/blog/bucklescript-is-rebranding">the official ReScript blog
-post</a>.</p>
-<p>The rebranding is trying to ease onboarding and adoption of the ReScript
-language, giving the project more chances to compete with mainstream
-compiled-to-JavaScript languages like TypeScript. However, for many existing
-users of BuckleScript and Reason, it is the explicit confirmation of something
-that had been hinted implicitly before: ReScript goals are not compatible with
-providing a good integration with the OCaml ecosystem.</p>
-<h4 id="melange-back-to-ocaml">Melange: back to OCaml</h4>
-<p>This is where Melange comes in. A few weeks after the rebranding of BuckleScript
-to ReScript, António Monteiro starts working on a fork of BuckleScript with a
-simple (not easy) goal: replace the <a href="https://ninja-build.org/">Ninja build
-system</a>, which BuckleScript had been using from its
-creation, with <a href="https://dune.build/">Dune</a>, which is the most used build system
-for OCaml projects.</p>
-<p>This fork of BuckleScript is later named Melange. After finishing the switch
-from Ninja to Dune, several additional features are added to bring it closer to
-OCaml. Some examples are the upgrade of the OCaml compiler version used by
-Melange, or modelling the changes to the OCaml compiler that Melange uses as
-just a plain library, instead of a full fork of the whole compiler.</p>
-<p>In September 2022, Ahrefs decides to invest on Melange by funding a project to
-deepen the integration between Dune and Melange. This project achieves its
-completion in Spring 2023, with the <a href="https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4">migration of Ahrefs frontend codebase to
-Melange</a>
-and the new public releases that support it: version 3.8 of Dune and 1.0 of
-Melange.</p>
-<h2 id="package-management">Package management</h2>
-<p>Melange uses a dual approach to package management:</p>
-<ul>
-<li>For Melange libraries and bindings, use <a href="https://opam.ocaml.org/">opam</a>.</li>
-<li>For JavaScript packages required by Melange bindings, use
-  <a href="https://docs.npmjs.com/cli/">npm</a> (or <a href="https://npmtrends.com/@microsoft/rush-vs-bolt-vs-pnpm-vs-rush-vs-yarn">any of its
-  alternatives</a>).</li>
-</ul>
-<p>This dual approach has some obvious downsides, such as forcing Melange
-applications to have both an <code>&lt;app_name&gt;.opam</code> and a <code>package.json</code> file.
-However, it unlocks the advantages of both ecosystems. As we will see below,
-opam has been designed for the OCaml language, which makes the developer
-experience fundamentally different from npm in the way it handles and installs
-dependencies.</p>
-<p>In the following sections, we will go through the details of how to use opam to
-define the dependencies of our application, as well as how to publish packages
-in the public opam repository. However, this documentation is not exhaustive and
-only covers what we believe are the most important parts for Melange developers.
-If you want to learn more about opam, please refer to the <a href="https://opam.ocaml.org/doc/Manual.html">opam
-manual</a> and <a href="https://opam.ocaml.org/doc/FAQ.html">FAQ
-page</a>.</p>
-<h3 id="opam-for-melange-developers">opam for Melange developers</h3>
-<p>Before diving into specifics about using opam, there are the two relevant
-differences between opam and npm that are worth mentioning.</p>
-<p><strong>1. One version of each package</strong></p>
-<p>At any given time, any opam switch can only <em>at most</em> a single version of a
-package. This is known as a flat dependency graph, and some package managers in
-other languages (like <a href="https://bower.io/">Bower</a>) follow a similar approach.</p>
-<p>A flat dependency graph means that, for example, it is impossible to have two
-versions of <a href="https://github.com/reasonml/reason-react/"><code>reason-react</code></a>
-installed in the same project. This avoids some headaches when one inadvertently
-installs two versions of a dependency. Also, and specifically for Melange, it
-helps keep the resulting JavaScript bundle lean and reduce page load for
-browser-based applications.</p>
-<p>On the other hand, upgrading your project dependencies to more recent versions
-might become tricky. Due to the restriction where only one version of a package
-can be installed, there is a higher chance for conflicts between the constraints
-of the transitive dependencies. If opam cannot find a solution, these conflicts
-need to be solved manually. This generally involves updating the conflicting
-dependency to make it compatible with a newer version of Melange or a transient
-dependency.</p>
-<p><strong>2. A source-based package manager for a compiled language</strong></p>
-<p>opam distributes just the source code of the packages and leaves the compilation
-step to a build phase that runs when consuming them, after they have been
-fetched. As the package manager for a compiled language like OCaml, opam has
-first-class support for this build step. Every package must tell opam how it
-should be built, and the way to do this is by using the <a href="https://opam.ocaml.org/doc/Manual.html#opamfield-build"><code>build</code>
-field</a> in the package
-<code>.opam</code> file.</p>
-<p>This is different from how npm handles packages. Because npm has been designed
-for JavaScript (an interpreted language) having a build step makes no sense.
-Whenever any project or community tries to use npm to distribute software that
-includes code written in compiled languages, the burden to distribute pre-built
-binaries is imposed on library authors, like <a href="https://github.com/sass/node-sass/issues/1589">the node-sass
-example</a> shows.</p>
-<p>As Melange relies heavily on OCaml packages for the compilation step (either
-PPXs, linters, instrumentation, or any other build-time package), using opam
-provides access to these tools without library authors having to care about
-creating and distributing pre-built versions of their packages.</p>
-<hr />
-<p>Let’s go now through the most common actions with opam when working on Melange
-projects. The following guide is based on the amazing <a href="http://ocamlverse.net/content/opam_npm.html">opam for npm/yarn
-users</a> guide by Louis
-(<a href="https://github.com/Khady">@khady</a>).</p>
-<h4 id="initial-configuration">Initial configuration</h4>
-<p>The first thing to do is to install opam. There is an <a href="https://opam.ocaml.org/doc/Install.html">official documentation
-page</a> on installation. Most of the
-time, we can simply get it from your package manager. Otherwise, binaries are
-provided for every platform.</p>
-<p>There is a necessary first step before using opam:</p>
-<pre><code class="language-bash">opam init -a
-</code></pre>
-<p>Here is what the documentation of the <code>opam init</code> command says:</p>
-<blockquote>
-<p>The init command initialises a local "opam root" (by default, <code>~/.opam/</code>) that
-holds opam’s data and packages. This is a necessary step for normal operation
-of opam. The initial software repositories are fetched, and an initial
-'switch' can also be installed, according to the configuration and options.
-These can be afterwards configured using opam switch and opam repository.</p>
-<p>Additionally, this command allows to customise some aspects of opam’s shell
-integration, when run initially (avoiding the interactive dialog), but also at
-any later time.</p>
-</blockquote>
-<p>The interesting parts are:</p>
-<ul>
-<li>The opam root is at <code>~/.opam</code></li>
-<li>opam uses shell integration to make our life easier</li>
-<li>opam uses the concept of a <em>switch</em></li>
-</ul>
-<p>A switch is the equivalent of the <code>node_modules</code> folder in npm’s world. It
-contains all the packages that are installed. There are local switches and
-global switches, in the same way we can have a <code>node_modules</code> folder local to
-our project or install global dependencies using <code>yarn global</code> or <code>npm install
--g</code>. Global switches can be handy sometimes, but to avoid confusion, the
-recommendation is to avoid them.</p>
-<p>The default settings can be changed if the <code>-a</code> option is omitted while calling
-<code>opam init</code>.</p>
-<h4 id="minimal-appopam-file">Minimal <code>app.opam</code> file</h4>
-<p>The equivalent to <code>package.json</code> is an <code>app.opam</code> file, where <code>app</code> is the name
-of the package. It is possible to have multiple opam files in the same directory
-or project.</p>
-<p>There is no opam command to manipulate the opam file. A command similar to <code>npm
-init</code> or <code>yarn add</code> does not exist in opam, so the updates in <code>.opam</code> files have
-to be done by hand.</p>
-<p>A minimal <code>.opam</code> file looks like this:</p>
-<pre><code>opam-version: &quot;2.0&quot;
-name: &quot;my-app&quot;
-authors: &quot;Louis&quot;
-homepage: &quot;https://github.com/khady/example&quot;
-maintainer: &quot;ex@ample.com&quot;
-dev-repo: &quot;git+ssh://git@github.com:khady/example.git&quot;
-bug-reports: &quot;https://github.com/khady/example/issues&quot;
-version: &quot;0.1&quot;
-build: [
-  [ &quot;dune&quot; &quot;subst&quot; ] {pinned}
-  [ &quot;dune&quot; &quot;build&quot; &quot;-p&quot; name &quot;-j&quot; jobs ]
-]
-depends: [
-  &quot;dune&quot; {build}
-]
-</code></pre>
-<p><code>build:</code> tells opam that <code>dune</code> is needed only to build the project.</p>
-<h4 id="installing-packages">Installing packages</h4>
-<p>The first thing we need is a local switch in the current project. To verify if a
-switch exists already, we can look for a <code>_opam</code> directory at the root of the
-project or use the <code>opam switch</code> command to identify if a switch already exists
-in the project folder.</p>
-<p>If it does not exist, we can create it with:</p>
-<pre><code class="language-bash">opam switch create . 4.14.1 --deps-only
-</code></pre>
-<p>If it exists, we can install the dependencies of the project with:</p>
-<pre><code class="language-bash">opam install . --deps-only
-</code></pre>
-<h4 id="add-new-packages">Add new packages</h4>
-<p>To add a new package to the opam switch, we can do:</p>
-<pre><code class="language-bash">opam install &lt;package_name&gt;
-</code></pre>
-<p>But opam will not modify the <code>app.opam</code> file during the installation, this has
-to be done by hand. It is as simple as adding the name of the package in the
-<code>depends</code> field.</p>
-<h4 id="linking-packages-for-development">Linking packages for development</h4>
-<p>This can be achieved with <code>opam pin</code>. For example, to pin a package to a
-specific commit on GitHub:</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#61bfbfaf8c971dec5152bce7e528d30552c70bc5
-</code></pre>
-<p>Branch names can also be used.</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#feature
-</code></pre>
-<p>A shortcut to get the latest version of a package is to use the <code>--dev-repo</code>
-flag, e.g.</p>
-<pre><code class="language-bash">opam pin add reason-react.dev --dev-repo
-</code></pre>
-<p>To remove the pinning for any package, use <code>opam unpin &lt;package_name&gt;</code> or <code>opam
-pin remove &lt;package_name&gt;</code>.</p>
-<p>For other options, the command is well described in <a href="https://opam.ocaml.org/doc/Usage.html#opam-pin">the official
-documentation</a>.</p>
-<h4 id="upgrading-packages">Upgrading packages</h4>
-<p>To upgrade the installed packages to the latest version, run:</p>
-<pre><code class="language-bash">opam upgrade &lt;package_name&gt;
-</code></pre>
-<p><code>opam upgrade</code> is also able to upgrade <em>all</em> the packages of the local switch if
-no package name is given.</p>
-<p>There is one big difference compared to npm: opam stores a local copy of the
-opam repository, like <code>apt-get</code> does in Debian. So we often want to update this
-copy before requesting an upgrade:</p>
-<pre><code class="language-bash">opam update &amp;&amp; opam upgrade &lt;package_name&gt;
-</code></pre>
-<h4 id="dev-dependencies">Dev dependencies</h4>
-<p>You can use the <a href="https://opam.ocaml.org/doc/Manual.html#pkgvar-with-dev-setup"><code>with-dev-setup</code>
-field</a> to define
-dependencies that are only required at development time. For example:</p>
-<pre><code>depends: [
-  &quot;ocamlformat&quot; {with-dev-setup}
-]
-</code></pre>
-<p>This has to be combined with the <code>--with-dev-setup</code> flag when installing
-dependencies, e.g. <code>opam install --deps-only --with-dev-setup</code>.</p>
-<h4 id="lock-files">Lock files</h4>
-<p>Lock files are also not common yet in the opam world, but they can be used as
-follows:</p>
-<ul>
-<li>Using <code>opam lock</code> to generate the lock file when needed (basically after each
-  <code>opam install</code> or <code>opam upgrade</code>).</li>
-<li>Adding <code>--locked</code> to all the <code>opam install --deps-only</code> and <code>opam switch
-  create .</code> commands.</li>
-</ul>
-<h4 id="bindings-and-package-management">Bindings and package management</h4>
-<p>When writing Melange libraries that bind to existing JavaScript packages, the
-users of the Melange library will have to make sure to install those JavaScript
-packages manually.</p>
-<p>This is similar to how OCaml bindings to system libraries work, see examples
-like
-<a href="https://github.com/andrenth/ocaml-mariadb/blob/9db2e4d8dec7c584213d0e0f03d079a36a35d9d5/README.md?plain=1#L18-L20"><code>ocaml-mariadb</code></a>
-or
-<a href="https://github.com/ygrek/ocurl/blob/f0c6f47d6f3d25282648439dc4ade5810a993710/README.md?plain=1#L16"><code>ocurl</code></a>.</p>
-<p>The advantage of this approach —as opposed to vendoring the JavaScript packages
-inside the bindings— is that it gives users of the bindings complete flexibility
-over the way these JavaScript packages are downloaded and bundled.</p>
-<h2 id="build-system">Build system</h2>
-<p>Melange is deeply integrated with <a href="https://dune.build/">Dune</a>, the most widely
-used build system for OCaml. This integration enables developers to create a
-single project with both OCaml native executables and frontend applications that
-are built with Melange, and even share code between both platforms in an easy
-manner.</p>
-<p>The way Dune and Melange work with each other is as follows: Dune orchestrates
-and plans the work needed to compile a project, copies files when needed, and
-prepares everything so that Melange takes OCaml source files and convert them
-into JavaScript code.</p>
-<p>Let’s now dive into the Melange compilation model and go through a brief guide
-on how to work with Dune in Melange projects.</p>
-<h3 id="compilation-model">Compilation model</h3>
-<p>Melange compiles a single source file (either <code>.ml</code> or <code>.re</code> for
-<a href="https://reasonml.github.io/en/">Reason</a> syntax) to a single JavaScript module.
-This simplifies debugging the produced JavaScript code and allows to import
-assets like CSS files and fonts in the same way as one would do in a JavaScript
-project. Even if Melange does not handle the bundling of JavaScript code for web
-applications, its compilation model allows integration with tools such as
-<a href="https://webpack.js.org/">Webpack</a>, or <a href="https://npmtrends.com/@vercel/ncc-vs-esbuild-vs-parcel-vs-rollup">other
-alternatives</a>.</p>
-<p>The <a href="https://github.com/melange-re/melange-opam-template">Melange opam template</a>
-can be used as reference, as it provides an example of how to integrate Melange
-with Webpack.</p>
-<h3 id="dune-for-melange-developers">Dune for Melange developers</h3>
-<p>Dune is an OCaml build system that Melange projects can use to specify libraries
-and applications. It’s optimized for monorepos and makes project maintenance
-easier. This section provides an overview of Dune’s features and explains how to
-use it to build Melange applications.</p>
-<h4 id="features">Features</h4>
-<p>Dune is designed with OCaml in mind, which makes it an ideal tool for Melange
-developers. It provides several benefits, including:</p>
-<ul>
-<li>Easy specification of libraries and executables.</li>
-<li>Optimized for monorepos: no need for <code>npm link</code> or similar solutions.</li>
-<li>Easy project maintenance, as one can rearrange folders without updating the
-  paths to libraries.</li>
-<li>Hygiene is maintained in Dune by never writing in source folders by default,
-  unless explicitly configured to do so. All the compilation artifacts are
-  placed in a separate <code>_build</code> folder.</li>
-<li>Dune provides a variety of additional features including <a href="https://dune.readthedocs.io/en/stable/tests.html">cram
-  tests</a>, integration with
-  <a href="https://dune.readthedocs.io/en/stable/documentation.html">Odoc</a>, Melange,
-  <a href="https://dune.readthedocs.io/en/stable/jsoo.html">Js_of_ocaml</a>, <a href="https://dune.readthedocs.io/en/stable/usage.html#watch-mode">watch
-  mode</a>, Merlin/LSP
-  integration for editor support, <a href="https://dune.readthedocs.io/en/stable/cross-compilation.html">cross
-  compilation</a>,
-  and <a href="https://dune.readthedocs.io/en/stable/opam.html#generating-opam-files">generation of <code>opam</code>
-  files</a>.</li>
-</ul>
-<h4 id="creating-a-new-project">Creating a new project</h4>
-<p>To understand how to use Dune, let’s create a small Melange application using
-it.</p>
-<p>First of all, create an opam switch, like shown in the <a href="#package-management">package management
-section</a>:</p>
-<pre><code class="language-bash">opam switch create . 4.14.1 --deps-only
-</code></pre>
-<p>Install Dune and Melange in the switch:</p>
-<pre><code class="language-bash">opam install dune melange
-</code></pre>
-<p>Create a file named <code>dune-project</code>. This file will tell Dune a few things about
-our project configuration:</p>
-<pre><code class="language-bash">(lang dune 3.8)
+<body class="wy-body-for-nav" role="document">
 
-(using melange 0.1)
-</code></pre>
-<p>The first line <code>(lang dune 3.8)</code> tells Dune which version of the "Dune language"
-(the language used in <code>dune</code> files) we want to use. Melange is only compatible
-with versions of the Dune language equal or greater than 3.8.</p>
-<p>The second line <code>(using melange 0.1)</code> tells Dune we want to use the <a href="https://dune.readthedocs.io/en/stable/dune-files.html#using">Melange
-extension of the Dune
-language</a>.</p>
-<h4 id="adding-a-library">Adding a library</h4>
-<p>Next, create a folder <code>lib</code>, and a <code>dune</code> file inside. Put the following content
-inside the <code>dune</code> file:</p>
-<pre><code class="language-bash">(library
- (name lib)
- (modes melange))
-</code></pre>
-<p>Create a file <code>lib.ml</code> in the same folder:</p>
-<pre><code class="language-ml">let name = &quot;Jane&quot;
-</code></pre>
-<p>The top level configuration entries —like the <code>library</code> one that appears in the
-<code>dune</code> file— are referred to as <em>stanzas</em>, and the inner ones —like <code>name</code> and
-<code>modes</code>— are referred to as <em>fields</em> of the stanza.</p>
-<p>All stanzas are well covered in the Dune documentation site, where we can find
-the reference for the <a href="https://dune.readthedocs.io/en/stable/dune-files.html#library"><code>library</code>
-stanza</a>.</p>
-<p>Dune is designed to minimize changes in configuration when the project folder
-structure changes, so one can move around the <code>lib</code> folder to another place
-inside the project, and all build commands will still keep working without any
-changes in Dune configuration. Very handy!</p>
-<h4 id="entry-points-with-melangeemit">Entry points with <code>melange.emit</code></h4>
-<p>Libraries are useful to encapsulate behavior and logical components of our
-application, but they won’t produce any JavaScript artifacts on their own.</p>
-<p>To generate JavaScript code, we need to define an entry point of our
-application. In the root folder, create another <code>dune</code> file:</p>
-<pre><code class="language-bash">(melange.emit
- (target app)
- (libraries lib))
-</code></pre>
-<p>And an <code>app.ml</code> file:</p>
-<pre><code>let () = Js.log Lib.name
-</code></pre>
-<p>The <code>melange.emit</code> stanza is the one that tells Dune to generate JavaScript
-files from a set of libraries and modules. In-depth documentation about this
-stanza can be found on the <a href="https://dune.readthedocs.io/en/latest/melange.html">Dune
-docs</a>.</p>
-<p>The file structure of the app should look something like this:</p>
-<pre><code>project_name/
-├── _opam
-├── lib
-│   ├── dune
-│   └── lib.ml
-├── dune-project
-├── dune
-└── main.ml
-</code></pre>
-<h4 id="building-the-project">Building the project</h4>
-<p>We can build the project now, which will produce the JavaScript code from our
-sources using the Melange compiler:</p>
-<pre><code class="language-bash">$ dune build @melange
-</code></pre>
-<p>This command tells dune to build all the targets that have an alias <code>melange</code>
-attached to them.
-<a href="https://dune.readthedocs.io/en/stable/overview.html#term-alias">Aliases</a> are
-build targets that don’t produce any file and have configurable dependencies.</p>
-<p>By default, all the targets in a <code>melange.emit</code> stanza and the libraries it
-depends on are attached to the <code>melange</code> alias. We can define explicit aliases
-though, as we will see below.</p>
-<p>If everything went well, we should be able to run the resulting JavaScript with
-Node. As we mentioned while going through its features, Dune places all
-artifacts inside the <code>_build</code> folder to not pollute any source folders. So we
-will point Node to the script placed in that folder, to see the expected output:</p>
-<pre><code class="language-bash">$ node _build/default/app/app.js
-Jane
-</code></pre>
-<p>One thing to note is that we have to look for the <code>app.js</code> file inside an <code>app</code>
-folder, but we don’t have any such folder in our sources. The reason why this
-folder is created is to support multiple <code>melange.emit</code> stanzas in the same
-folder. To support this scenario, Dune will use the <code>target</code> field defined in
-the <code>melange.emit</code> to place the artifacts generated from a <code>melange.emit</code> stanza
-in the following folder:</p>
-<pre><code>_build/default/$path-to-directory-of-melange-emit-stanza/$target
-</code></pre>
-<p>This allows to have two or more <code>melange.emit</code> stanzas in the same folder
-without conflicts or overrides between each other.</p>
-<h4 id="using-aliases">Using aliases</h4>
-<p>The default <code>melange</code> alias is useful for prototyping or when working on small
-projects, but larger projects might define multiple entry points or
-<code>melange.emit</code> stanzas. In these cases, it is useful to have a way to build
-individual stanzas. To do so, one can define explicit aliases for each one of
-them by using the <code>alias</code> field.</p>
-<p>Let’s define a custom alias <code>app</code> for our <code>melange.emit</code> stanza: </p>
-<pre><code class="language-bash">(melange.emit
- (target app)
- (alias app)
- (libraries lib))
-</code></pre>
-<p>Now, when building with Dune, we can refer to this new alias:</p>
-<pre><code class="language-bash">$ dune build @app
-</code></pre>
-<p>Note that if we try to build again using the default <code>melange</code> alias, Dune will
-return an error, as there are no more targets attached to it.</p>
-<pre><code class="language-bash">$ dune build @melange
-Error: Alias &quot;melange&quot; specified on the command line is empty.
-It is not defined in . or any of its descendants.
-</code></pre>
-<h4 id="handling-assets">Handling assets</h4>
-<p>The last topic we will go through in this demo project is asset handling.
-Sometimes we want to use CSS files, fonts, or other assets in our Melange
-projects. Due to the way Dune works, our assets will have to be copied to the
-<code>_build</code> folder as well. To make this process as easy as possible, the Melange
-integration with Dune provides two ways to do this:</p>
-<ul>
-<li>For <code>library</code> stanzas, a field <code>melange.runtime_deps</code></li>
-<li>For <code>melange.emit</code> stanzas, a field <code>runtime_deps</code></li>
-</ul>
-<p>Both fields are documented in the <a href="https://dune.readthedocs.io/en/latest/melange.html">Melange
-page</a> of the Dune
-documentation site.</p>
-<p>For the sake of learning how to work with assets in a Melange project, let’s say
-that we want to read the string in <code>Lib.name</code> from a text file. We will combine
-the field <code>melange.runtime_deps</code> with some bindings to Node that Melange
-provides. Check the next section, <a href="#communicate-with-javascript">"Communicate with
-JavaScript"</a>, it you want to learn more about how
-bindings work.</p>
-<p>So, let’s add a new file <code>name.txt</code> inside <code>lib</code> folder, that just contains the
-name <code>Jane</code>.</p>
-<p>Then, adapt the <code>lib/dune</code> file. We will need to add the <code>melange.runtime_deps</code>
-field, as well as a <a href="https://dune.readthedocs.io/en/stable/reference/preprocessing-spec.html"><code>preprocessing</code>
-field</a>
-that will allow to use the <code>bs.raw</code> extension, in order to get the value of the
-<code>__dirname</code> environment variable:</p>
-<pre><code class="language-bash">(library
- (name lib)
- (modes melange)
- (melange.runtime_deps name.txt)
- (preprocess (pps melange.ppx)))
-</code></pre>
-<p>Finally, update <code>lib/lib.ml</code> to read from the recently added file:</p>
-<pre><code class="language-ocaml">let dir = [%bs.raw &quot;__dirname&quot;]
-let file = &quot;name.txt&quot;
-let name = Node.Fs.readFileSync (dir ^ &quot;/&quot; ^ file) `ascii
-</code></pre>
-<p>After these changes, once we build the project, we should still be able to run
-the application file with Node:</p>
-<pre><code class="language-bash">$ dune build @app
-$ node _build/default/app/app.js
-Jane
-</code></pre>
-<p>The same approach could be used to copy fonts, CSS or SVG files, or any other
-asset in your project. Note that Dune offers great flexibility to copy runtime
-assets using wildcards or globs, so one can simplify the configuration when
-there are a lot of runtime dependencies, for example:</p>
-<pre><code class="language-bash">(melange.runtime_deps
- (glob_files styles/*.css)
- (glob_files images/*.png)
- (glob_files static/*.{pdf,txt}))
-</code></pre>
-<p>See the documentation for <a href="https://dune.readthedocs.io/en/latest/concepts/dependency-spec.html#glob">glob
-dependencies</a>
-to learn more about it.</p>
-<p>With runtime dependencies, we have reached the end of this Dune guide for
-Melange developers. For further details about how Dune works and its integration
-with Melange, check the <a href="https://dune.readthedocs.io/">Dune documentation</a>, and
-the <a href="https://github.com/melange-re/melange-opam-template">Melange opam
-template</a>.</p>
-<h2 id="communicate-with-javascript">Communicate with JavaScript</h2>
-<p><em>TODO: Sections will be something like:</em></p>
-<pre><code>- intro: explain attributes, extensions, and `bs.` backwards compatibility
-- `melange.ppx` preprocessor and extensions
-- data types
-- call javascript from melange:
-  - intro to external (link to OCaml docs)
-  - bindings with external (to functions, objects or other values)
-  - global values
-- call melange from javascript
-</code></pre>
-<h2 id="additions-to-ocaml">Additions to OCaml</h2>
-<p><em>TODO: pipe first</em></p>
-<h2 id="melange-for-x-users">Melange for X users</h2>
-<p><em>TODO: For ReScript users, for OCaml users, for TypeScript/JavaScript users.</em></p></div>
-            </div>
-        </div>
-
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../js/base.js" defer></script>
-        <script src="../search/main.js" defer></script>
-
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            </div>
-            <div class="modal-body">
-                <p>From here you can search these documents. Enter your search terms below.</p>
-                <form>
-                    <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Melange
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
 </div>
+      </div>
 
-    </body>
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../rationale/">Why</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Learn</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../new-to-ocaml/">New to OCaml?</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-management/">Package management</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build-system/">Build system</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../communicate-with-javascript/">Communicate with JavaScript</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Try</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../try/">Playground</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Talk</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../community/">Community</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Melange</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Learn</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/melange-re/documentation-site/blob/master/docs/learn.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="learn">Learn</h1>
+<p>This section is organized in four separate parts:</p>
+<ul>
+<li><a href="../new-to-ocaml/">New to OCaml?</a></li>
+<li><a href="../package-management/">Package management</a></li>
+<li><a href="../build-system/">Build system</a></li>
+<li><a href="../communicate-with-javascript/">Communicate with JavaScript</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/melange-re/documentation-site/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../js/print-site.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
 </html>

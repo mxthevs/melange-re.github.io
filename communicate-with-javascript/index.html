@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Communicate with JavaScript - Melange</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Communicate with JavaScript";
+        var mkdocs_page_input_path = "communicate-with-javascript.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/ocaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Melange
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../rationale/">Why</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting Started</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Learn</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../new-to-ocaml/">New to OCaml?</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-management/">Package management</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../build-system/">Build system</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Communicate with JavaScript</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#data-types-and-runtime-representation">Data types and runtime representation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#shared-types">Shared types</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#strings">Strings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#floating-point-numbers">Floating-point numbers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#integers">Integers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tuples">Tuples</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#booleans">Booleans</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#records">Records</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#non-shared-data-types">Non-shared data types</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#language-extensions">Language extensions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#list-of-attributes-and-extensions">List of attributes and extensions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#foreign-function-interface">Foreign function interface</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#special-identity-external">Special identity external</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#abstract-types">Abstract types</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#generate-raw-javascript">Generate raw JavaScript</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#debugger">Debugger</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#detect-global-variables">Detect global variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bind-to-javascript-objects">Bind to JavaScript objects</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objects-with-static-shape-record-like">Objects with static shape (record-like)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#using-ocaml-records">Using OCaml records</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#using-jst-objects">Using Js.t objects</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#bind-to-object-properties">Bind to object properties</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#objects-with-dynamic-shape-dictionary-like">Objects with dynamic shape (dictionary-like)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#javascript-classes">JavaScript classes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bind-to-global-javascript-functions-or-values">Bind to global JavaScript functions or values</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#using-functions-from-other-javascript-modules">Using functions from other JavaScript modules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#labeled-arguments">Labeled arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#calling-an-object-method">Calling an object method</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#chaining">Chaining</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#variadic-function-arguments">Variadic function arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bing-to-a-polymorphic-function">Bing to a polymorphic function</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#approach-1-multiple-external-functions">Approach 1: Multiple external functions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#approach-2-polymorphic-variant-bsunwrap">Approach 2: Polymorphic variant + bs.unwrap</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-polymorphic-variants-to-bind-to-enums">Using polymorphic variants to bind to enums</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-polymorphic-variants-to-bind-to-event-listeners">Using polymorphic variants to bind to event listeners</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#constant-values-as-arguments">Constant values as arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#binding-to-callbacks">Binding to callbacks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modeling-this-based-callbacks">Modeling this-based Callbacks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wrapping-returned-nullable-values">Wrapping returned nullable values</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Try</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../try/">Playground</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Talk</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../community/">Community</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Melange</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Learn &raquo;</li>
+      <li>Communicate with JavaScript</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/melange-re/documentation-site/blob/master/docs/communicate-with-javascript.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="communicate-with-javascript">Communicate with JavaScript</h1>
+<p>Melange interoperates very well with JavaScript, and provides a wide array of
+features to consume foreign JavaScript code. To learn about these techniques, we
+will first map the OCaml type system to JavaScript runtime types, then we will
+see the OCaml language extensions that allow these techniques to exist. Finally,
+we will provide a variety of use cases with examples to show how to communicate
+to and from JavaScript.</p>
+<h2 id="data-types-and-runtime-representation">Data types and runtime representation</h2>
+<p>This is how each Melange type is converted into JavaScript values:</p>
+<table>
+<thead>
+<tr>
+<th>Melange</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int</td>
+<td>number</td>
+</tr>
+<tr>
+<td>nativeint</td>
+<td>number</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>number</td>
+</tr>
+<tr>
+<td>float</td>
+<td>number</td>
+</tr>
+<tr>
+<td>string</td>
+<td>string</td>
+</tr>
+<tr>
+<td>array</td>
+<td>array</td>
+</tr>
+<tr>
+<td>tuple <code>(3, 4)</code></td>
+<td>array <code>[3, 4]</code></td>
+</tr>
+<tr>
+<td>bool</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>Js.Nullable.t</td>
+<td><code>null</code> / <code>undefined</code></td>
+</tr>
+<tr>
+<td>Option.t <code>None</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td>Option.t <code>Some( Some .. Some (None))</code></td>
+<td>internal representation</td>
+</tr>
+<tr>
+<td>Option.t <code>Some 2</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>record <code>{x: 1; y: 2}</code></td>
+<td>object <code>{x: 1, y: 2}</code></td>
+</tr>
+<tr>
+<td>int64</td>
+<td>array of 2 elements <code>[high, low]</code> high is signed, low unsigned</td>
+</tr>
+<tr>
+<td>char</td>
+<td><code>'a'</code> -&gt; <code>97</code> (ascii code)</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>number array</td>
+</tr>
+<tr>
+<td>list <code>[]</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>list <code>[x, y]</code></td>
+<td><code>{ hd: x, tl: { hd: y, tl: 0 } }</code></td>
+</tr>
+<tr>
+<td>list <code>[1, 2, 3]</code></td>
+<td><code>{ hd: 1, tl: { hd: 2, tl: { hd: 3, tl: 0 } } }</code></td>
+</tr>
+<tr>
+<td>variant</td>
+<td>See below</td>
+</tr>
+<tr>
+<td>polymorphic variant</td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<p>Variants with a single non-nullary constructor:</p>
+<pre><code class="language-ocaml">type tree = Leaf | Node of int * tree * tree
+(* Leaf -&gt; 0 *)
+(* Node(7, Leaf, Leaf) -&gt; { _0: 7, _1: 0, _2: 0 } *)
+</code></pre>
+<p>Variants with more than one non-nullary constructor:</p>
+<pre><code class="language-ocaml">type t = A of string | B of int
+(* A(&quot;foo&quot;) -&gt; { TAG: 0, _0: &quot;Foo&quot; } *)
+(* B(2) -&gt; { TAG: 1, _0: 2 } *)
+</code></pre>
+<p>Polymorphic variants:</p>
+<pre><code class="language-ocaml">let u = `Foo (* &quot;Foo&quot; *)
+let v = `Foo(2) (* { NAME: &quot;Foo&quot;, VAL: &quot;2&quot; } *)
+</code></pre>
+<p>Let’s see now some of these types in detail. We will first describe the <a href="#shared-types">shared
+types</a>, which have a transparent representation as JavaScript
+values, and then go through the <a href="#non-shared-data-types">non-shared types</a>, that
+have more complex runtime representations.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> Relying on the non-shared data types runtime representations by
+reading or writing them manually from JavaScript code that communicates with
+Melange code might lead to runtime errors, as these representations might change
+in the future.</p>
+</blockquote>
+<h2 id="shared-types">Shared types</h2>
+<p>The following are types that can be shared between Melange and JavaScript almost
+"as is". Specific caveats are mentioned on the sections where they apply.</p>
+<h3 id="strings">Strings</h3>
+<p>JavaScript strings are immutable sequences of UTF-16 encoded Unicode text. OCaml
+strings are immutable sequences of bytes and nowadays assumed to be UTF-8
+encoded text when interpreted as textual content. This is problematic when
+interacting with JavaScript code, because if one tries to use some unicode
+characters, like:</p>
+<pre><code class="language-ocaml">let () = Js.log &quot;你好&quot;
+</code></pre>
+<p>It will lead to some cryptic console output. To rectify this, Melange allows to
+define <a href="https://v2.ocaml.org/manual/lex.html#sss:stringliterals">quoted string
+literals</a> using the
+<code>js</code> identifier, for example:</p>
+<pre><code class="language-ocaml">let () = Js.log {js|你好，
+世界|js}
+</code></pre>
+<p>For convenience, Melange exposes another special quoted string identifier: <code>j</code>.
+It is similar to JavaScript’ string interpolation, but for variables only (not
+arbitrary expressions):</p>
+<pre><code class="language-ocaml">let world = {j|世界|j}
+let helloWorld = {j|你好，$world|j}
+</code></pre>
+<p>You can surround the interpolation variable in parentheses too: <code>{j|你
+好，$(world)|j}</code>.</p>
+<p>To work with strings, the Melange standard library provides some utilities in
+the <a href="todo-fix-me.md"><code>Stdlib.String</code> module</a>. The bindings to the native
+JavaScript functions to work with strings are in the <a href="todo-fix-me.md"><code>Js.String</code>
+module</a>.</p>
+<h3 id="floating-point-numbers">Floating-point numbers</h3>
+<p>OCaml floats are <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64">IEEE
+754</a>
+with a 53-bit mantissa and exponents from -1022 to 1023. This happens to be the
+same encoding as <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_encoding">JavaScript
+numbers</a>,
+so values of these types can be used transparently between Melange code and
+JavaScript code. The Melange standard library provides a <a href="todo-fix-me.md"><code>Stdlib.Float</code>
+module</a>. The bindings to the JavaScript APIs that manipulate
+float values can be found in the <a href="todo-fix-me.md"><code>Js.Float</code></a> module.</p>
+<h3 id="integers">Integers</h3>
+<p>In Melange, integers are limited to 32 bits due to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#fixed-width_number_conversion">fixed-width
+conversion</a>
+of bitwise operations in JavaScript. While Melange integers compile to
+JavaScript numbers, treating them interchangeably can result in unexpected
+behavior due to differences in precision. Even though bitwise operations in
+JavaScript are constrained to 32 bits, integers themselves are represented using
+the same floating-point format <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_encoding">as
+numbers</a>,
+allowing for a larger range of representable integers in JavaScript compared to
+Melange. When dealing with large numbers, it is advisable to use floats instead.
+For instance, floats are used in bindings like <code>Js.Date</code>.</p>
+<p>The Melange standard library provides a <a href="todo-fix-me.md"><code>Stdlib.Int</code> module</a>.
+The bindings to work with JavaScript integers are in the
+<a href="todo-fix-me.md"><code>Js.Int</code></a> module.</p>
+<h3 id="arrays">Arrays</h3>
+<p>Melange arrays compile to JavaScript arrays. But note that unlike JavaScript
+arrays, all the values in a Melange array need to have the same type. </p>
+<p>Another difference is that OCaml arrays are fixed-sized, but on Melange side
+this constraint is relaxed. You can change an array’s length using functions
+like <code>Js.Array.push</code>, available in the bindings to the JavaScript APIs in
+<a href="todo-fix-me.md"><code>Js.Array</code></a>.</p>
+<p>Melange standard library also has a module to work with arrays, available in
+<code>Stdlib.Array</code>(todo-fix-me.md) module.</p>
+<h3 id="tuples">Tuples</h3>
+<p>OCaml tuples are compiled to JavaScript arrays. This is convenient when writing
+bindings that will use a JavaScript array with heterogeneous values, but that
+happens to have a fixed length.</p>
+<p>As a real world example of this can be found in
+<a href="https://github.com/reasonml/reason-react/">ReasonReact</a>, the Melange bindings
+for <a href="https://react.dev/">React</a>. In these bindings, component effects
+dependencies are represented as OCaml tuples, so they get compiled cleanly to
+JavaScript arrays by Melange.</p>
+<p>For example, some code like this:</p>
+<pre><code class="language-ocaml">let () = React.useEffect2 (fun () -&gt; None) (foo, bar)
+</code></pre>
+<p>Will produce:</p>
+<pre><code class="language-javascript">React.useEffect(function () {}, [foo, bar]);
+</code></pre>
+<h3 id="booleans">Booleans</h3>
+<p>Values of type <code>bool</code> compile to JavaScript booleans.</p>
+<h3 id="records">Records</h3>
+<p>Melange records map directly to JavaScript objects. If the record fields include
+non-shared data types (like variants), these values should be transformed
+separately, and not be directly used in JavaScript.</p>
+<p>Extensive documentation about interfacing with JavaScript objects using records
+can be found in <a href="#bind-to-js-object">the section below</a>.</p>
+<h2 id="non-shared-data-types">Non-shared data types</h2>
+<p>The following types differ too much between Melange and JavaScript, so while
+they can always be manipulated from JavaScript, it is recommended to transform
+them before doing so.</p>
+<ul>
+<li>Variants and polymorphic variants: Better transform them into readable
+  JavaScript values before manipulating them from JavaScript, Melange provides
+  <a href="todo-fix-me.md">some helpers</a> to do so.</li>
+<li>Exceptions</li>
+<li>Option (a variant type): Better use the <code>Js.Nullable.fromOption</code> and
+  <code>Js.Nullable.toOption</code> functions in the <a href="todo-fix-me.md"><code>Js.Nullable</code> module</a>
+  to transform them into either <code>null</code> or <code>undefined</code> values.</li>
+<li>List (also a variant type): use <code>Array.of_list</code> and <code>Array.to_list</code> in the
+  <a href="todo-fix-me.md"><code>Array</code> module</a>.</li>
+<li>Character</li>
+<li>Int64</li>
+<li>Lazy values</li>
+</ul>
+<h2 id="language-extensions">Language extensions</h2>
+<p>In order to interact with JavaScript, Melange needs to extend the language to
+provide blocks that express these interactions.</p>
+<p>One approach could be to introduce new syntactic constructs (keywords and such)
+to do so, for example:</p>
+<pre><code class="language-ocaml">javascript add : int -&gt; int -&gt; int = {|function(x,y){
+  return x + y
+}|}
+</code></pre>
+<p>But this would break compatibility with OCaml, which is one of the main goals of
+Melange.</p>
+<p>Fortunately, OCaml provides mechanisms to extend its language without breaking
+compatibility with the parser or the language. These mechanisms are composed by
+two parts:
+- First, some syntax additions to define parts of the code that will be extended
+  or replaced
+- Second, compile-time OCaml native programs called <a href="https://ocaml.org/docs/metaprogramming">PPX
+  rewriters</a>, that will read the syntax
+  additions defined above and proceed to extend or replace them</p>
+<p>The syntax additions come in two flavors, called <a href="https://v2.ocaml.org/manual/extensionnodes.html">extensions
+nodes</a> and
+<a href="https://v2.ocaml.org/manual/attributes.html">attributes</a>.</p>
+<p>Extension nodes are blocks that are supposed to be replaced by a specific type
+of PPX rewriters called extenders. Extension nodes use the <code>%</code> character to be
+identified. Extenders will take the extension node and replace it with a valid
+OCaml AST (abstract syntax tree).</p>
+<p>An example where Melange uses extensions to communicate with JavaScript is to
+produce "raw" JavaScript inside a Melange program: </p>
+<pre><code class="language-ocaml">[%%bs.raw &quot;var a = 1; var b = 2&quot;]
+let add = [%bs.raw &quot;a + b&quot;]
+</code></pre>
+<p>Which will generate the following JavaScript code:</p>
+<pre><code class="language-js">var a = 1; var b = 2
+var add = a + b
+</code></pre>
+<p>The difference between one and two <code>%</code> characters is detailed in the <a href="https://v2.ocaml.org/manual/extensionnodes.html">OCaml
+documentation</a>.</p>
+<p>Attributes are "decorations" applied to specific parts of the code to provide
+additional information. Melange uses attributes in various ways to enhance
+communication with JavaScript code. For instance, it introduces the <code>bs.as</code>
+attribute, which allows renaming of fields in a record on the generated
+JavaScript code:</p>
+<pre><code class="language-ocaml">type t = {
+  foo : int; [@bs.as &quot;foo_for_js&quot;]
+  bar : string;
+}
+
+let t = { foo = 2; bar = &quot;b&quot; }
+</code></pre>
+<p>This will generate the following JavaScript code:</p>
+<pre><code class="language-js">var t = {
+  foo_for_js: 2,
+  bar: &quot;b&quot;
+};
+</code></pre>
+<p>To learn more about preprocessors, attributes and extension nodes, check the
+<a href="https://ocaml.org/docs/metaprogramming#ppx-rewriters">section about PPX
+rewriters</a> in the OCaml
+docs.</p>
+<h2 id="list-of-attributes-and-extensions">List of attributes and extensions</h2>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> All these attributes and extensions are prefixed with <code>bs.</code> for
+backwards compatibility. They will be updated to <code>mel.</code> in the future.</p>
+</blockquote>
+<p><strong>Attributes:</strong></p>
+<p>These attributes are used to annotate <code>external</code> definitions:</p>
+<ul>
+<li><a href="#bind-to-object-properties"><code>bs.get</code></a>: read JavaScript object properties
+  statically by name, using the dot notation <code>.</code></li>
+<li><a href="#bind-to-object-properties"><code>bs.get_index</code></a>: read a JavaScript object’s
+  properties dynamically by using the bracket notation <code>[]</code></li>
+<li><a href="#using-functions-from-other-javascript-modules"><code>bs.module</code></a>: bind to a value
+  from a JavaScript module</li>
+<li><a href="#javascript-classes"><code>bs.new</code></a>: bind to a JavaScript class constructor</li>
+<li><a href="#using-jst-objects"><code>bs.obj</code></a>: create JavaScript object</li>
+<li><a href="#wrapping-returned-nullable-values"><code>bs.return</code></a>: automate conversion from
+  nullable values to <code>Option.t</code> values</li>
+<li><a href="#calling-an-object-method"><code>bs.send</code></a>: call a JavaScript object method using
+  <a href="todo-fix-me.md">pipe first</a> convention</li>
+<li><a href="#calling-an-object-method"><code>bs.send.pipe</code></a>: call a JavaScript object method
+  using <a href="todo-fix-me.md">pipe last</a> convention</li>
+<li><a href="#bind-to-object-properties"><code>bs.set</code></a>: set JavaScript object properties
+  statically by name, using the dot notation <code>.</code></li>
+<li><a href="#bind-to-object-properties"><code>bs.set_index</code></a>: set JavaScript object properties
+  dynamically by using the bracket notation <code>[]</code></li>
+<li><a href="todo-fix-me.md"><code>bs.scope</code></a>: reach to deeper properties inside a JavaScript
+  object</li>
+<li><a href="#bind-to-global-javascript-functions-or-values"><code>bs.val</code></a>: bind to global
+  JavaScript functions or other values</li>
+<li><a href="#variadic-function-arguments"><code>bs.variadic</code></a>: bind to a function taking
+  variadic arguments from an array</li>
+</ul>
+<p>These attributes are used to annotate arguments in <code>external</code> definitions:</p>
+<ul>
+<li><a href="#binding-to-callbacks"><code>bs</code></a>: define function arguments as uncurried (manual)</li>
+<li><a href="#using-polymorphic-variants-to-bind-to-enums"><code>bs.int</code></a>: compile function
+  argument to an int</li>
+<li><a href="#using-polymorphic-variants-to-bind-to-enums"><code>bs.string</code></a>: compile function
+  argument to a string</li>
+<li><a href="#modeling-this-based-callbacks"><code>bs.this</code></a>: bind to <code>this</code> based callbacks</li>
+<li><a href="#binding-to-callbacks"><code>bs.uncurry</code></a>: define function arguments as uncurried
+  (automated)</li>
+<li><a href="#approach-2-polymorphic-variant-bsunwrap"><code>bs.unwrap</code></a>: unwrap variant values</li>
+</ul>
+<p>These attributes are used in other places like records, fields, parameters, functions...:</p>
+<ul>
+<li><code>bs.as</code>: redefine the name generated in the JavaScript output code. Used in
+  <a href="#constant-values-as-arguments">constant function arguments</a>,
+  <a href="todo-fix-me.md">variants</a>, <a href="#using-polymorphic-variants-to-bind-to-enums">polymorphic
+  variants</a> and <a href="#objects-with-static-shape-record-like">record
+  fields</a>.</li>
+<li><a href="todo-fix-me.md"><code>bs.deriving</code></a>: generate getters and setters for some types</li>
+<li><a href="todo-fix-me.md"><code>bs.inline</code></a>: forcefully inline constant values</li>
+<li><a href="todo-fix-me.md"><code>bs.optional</code></a>: omit fields in a record (combines with
+  <code>bs.deriving</code>)</li>
+</ul>
+<p><strong>Extensions:</strong></p>
+<p>In order to use any of these extensions, you will have to add the melange PPX
+preprocessor to your project. To do so, add the following to the <code>dune</code> file:</p>
+<pre><code class="language-bash">(library
+ (name lib)
+ (modes melange)
+ (preprocess
+   (pps melange.ppx)))
+</code></pre>
+<p>The same field <code>preprocess</code> can be added to <code>melange.emit</code>.</p>
+<p>Here is the list of all extensions supported by Melange:</p>
+<ul>
+<li><code>bs.debugger</code>: insert <code>debugger</code> statements</li>
+<li><code>bs.external</code>: read global values</li>
+<li><code>bs.obj</code>: create JavaScript object literals</li>
+<li><code>bs.raw</code>: write raw JavaScript code</li>
+<li><code>bs.re</code>: insert regular expressions</li>
+</ul>
+<h2 id="foreign-function-interface">Foreign function interface</h2>
+<p>Most of the system that Melange exposes to communicate with JavaScript is built
+on top of an OCaml language construct called <code>external</code>.</p>
+<p><code>external</code> is a keyword for declaring a value in OCaml that will <a href="https://v2.ocaml.org/manual/intfc.html">interface with
+C code</a>:</p>
+<pre><code class="language-ocaml">external my_c_function : int -&gt; string = &quot;someCFunctionName&quot;
+</code></pre>
+<p>It is like a <code>let</code> binding, except that the body of an external is a string.
+That string has a specific meaning depending on the context. For native OCaml,
+it usually refers to a C function with that name. For Melange, it refers to the
+functions or values that exist in the runtime JavaScript code, and will be used
+from Melange.</p>
+<p>Melange externals are always decorated with certain <code>[@bs.xxx]</code> attributes.
+These attributes are listed <a href="#list-of-attributes-and-extensions">above</a>, and
+will be further explain in the next sections.</p>
+<p>Once declared, one can use an <code>external</code> as a normal value.</p>
+<p>Melange external functions are turned into the expected JavaScript values,
+inlined into their callers during compilation, and completely erased afterwards.
+They don’t appear in the JavaScript output, so there are no costs on bundling
+size.</p>
+<p><strong>Note</strong>: it is recommended to use external functions and the <code>[@bs.xxx]</code>
+attributes in the interface files as well, as this allows some optimizations
+where the resulting JavaScript values can be directly inlined at the call sites.</p>
+<h3 id="special-identity-external">Special identity external</h3>
+<p>One external worth mentioning is the following one:</p>
+<pre><code class="language-ocaml">type foo = string
+type bar = int
+external danger_zone : foo -&gt; bar = &quot;%identity&quot;
+</code></pre>
+<p>This is a final escape hatch which does nothing but convert from the type <code>foo</code>
+to <code>bar</code>. In the following sections, if you ever fail to write an <code>external</code>,
+you can fall back to using this one. But try not to.</p>
+<p>Let’s now see all the ways to use JavaScript from Melange.</p>
+<h3 id="abstract-types">Abstract types</h3>
+<p>In the examples below, you’ll encounter type definitions where a type is
+declared without being assigned to anything, such as:</p>
+<pre><code class="language-ocaml">type document
+</code></pre>
+<p>These types are referred to as "abstract types" and are commonly used together
+with external functions that define operations over values when communicating
+with JavaScript.</p>
+<p>Abstract types enable defining types for specific values originating from
+JavaScript while omitting unnecessary details. An illustration is the <code>document</code>
+type mentioned earlier, which has several
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">properties</a>. By
+using abstract types, one can focus solely on the required aspects of the
+<code>document</code> value that the Melange program requires, rather than defining all its
+properties. Consider the following example:</p>
+<pre><code class="language-ocaml">type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external set_title : document -&gt; string -&gt; unit = &quot;title&quot; [@@bs.set]
+</code></pre>
+<p>Subsequent sections delve into the details of the
+<a href="#bind-to-global-javascript-functions-or-values"><code>bs.val</code></a> and
+<a href="#bind-to-object-properties"><code>bs.set</code></a> attributes.</p>
+<p>For a comprehensive understanding of abstract types and their usefulness, refer
+to the "Encapsulation" section of the <a href="https://cs3110.github.io/textbook/chapters/modules/encapsulation.html">OCaml Cornell
+textbook</a>.</p>
+<h2 id="generate-raw-javascript">Generate raw JavaScript</h2>
+<p>It is possible to directly write JavaScript code from a Melange file. This is
+unsafe, but it can be useful for prototyping or as an escape hatch.</p>
+<p>To do it, we will use the <code>bs.raw</code>
+<a href="https://v2.ocaml.org/manual/extensionnodes.html">extension</a>:</p>
+<pre><code class="language-ocaml">let add = [%bs.raw {|
+  function(a, b) {
+    console.log(&quot;hello from raw JavaScript!&quot;);
+    return a + b;
+  }
+|}]
+
+let () = Js.log (add 1 2)
+</code></pre>
+<p>The <code>{||}</code> strings are called <a href="https://ocaml.org/manual/lex.html#quoted-string-id">"quoted
+strings"</a>. They are similar
+to JavaScript’s template literals, in the sense that they are multi-line, and
+there is no need to escape characters inside the string.</p>
+<p>Using one percentage sign (<code>[%bs.raw &lt;string&gt;]</code>) is useful to define expressions
+(function bodies, or other values) where the implementation is directly
+JavaScript. This is useful as we can attach the type signature already in the
+same line, to make our code safer. For example:</p>
+<pre><code class="language-ocaml">[%%bs.raw &quot;var a = 1&quot;]
+
+let f : unit -&gt; int = [%bs.raw &quot;function() {return 1}&quot;]
+</code></pre>
+<p>Using two percentage signs (<code>[%%bs.raw &lt;string&gt;]</code>) is reserved for definitions
+in a
+<a href="https://v2.ocaml.org/manual/moduleexamples.html#s:module:structures">structure</a>
+or <a href="https://v2.ocaml.org/manual/moduleexamples.html#s%3Asignature">signature</a>.</p>
+<p>For example:</p>
+<pre><code class="language-ocaml">[%%bs.raw &quot;var a = 1&quot;]
+</code></pre>
+<h2 id="debugger">Debugger</h2>
+<p>Melange allows to inject a <code>debugger;</code> expression using the <code>bs.debugger</code>
+extension:</p>
+<pre><code class="language-ocaml">let f x y =
+  [%bs.debugger];
+  x + y
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-javascript">function f (x,y) {
+  debugger; // JavaScript developer tools will set a breakpoint and stop here
+  x + y;
+}
+</code></pre>
+<h2 id="detect-global-variables">Detect global variables</h2>
+<p>Melange provides a relatively type safe approach to use globals that might be
+defined either in the JavaScript runtime environment: <code>bs.external</code>.</p>
+<p><code>[%bs.external id]</code> will check if the JavaScript value <code>id</code> is <code>undefined</code> or
+not, and return an <code>Option.t</code> value accordingly.</p>
+<p>For example:</p>
+<pre><code class="language-ocaml">let () = match [%bs.external __DEV__] with
+| Some _ -&gt; Js.log &quot;dev mode&quot;
+| None -&gt; Js.log &quot;production mode&quot;
+</code></pre>
+<p>Another example:</p>
+<pre><code class="language-ocaml">let () = match [%bs.external __filename] with
+| Some f -&gt; Js.log f
+| None -&gt; Js.log &quot;non-node environment&quot;
+</code></pre>
+<h2 id="bind-to-javascript-objects">Bind to JavaScript objects</h2>
+<p>JavaScript objects are used in a variety of use cases:</p>
+<ul>
+<li>As a fixed shape
+  <a href="https://en.wikipedia.org/wiki/Record_(computer_science)">record</a>.</li>
+<li>As a map or dictionary.</li>
+<li>As a class.</li>
+<li>As a module to import/export.</li>
+</ul>
+<p>Melange separates the binding methods for JavaScript objects based on these four
+use cases. This section documents the first three. Binding to JavaScript module
+objects is described in the <a href="#using-functions-from-other-javascript-modules">"Using functions from other JavaScript
+modules"</a> section.</p>
+<!-- TODO: mention scope here too? -->
+
+<h3 id="objects-with-static-shape-record-like">Objects with static shape (record-like)</h3>
+<h4 id="using-ocaml-records">Using OCaml records</h4>
+<p>If your JavaScript object has fixed fields, then it’s conceptually like an
+<a href="https://v2.ocaml.org/manual/coreexamples.html#s%3Atut-recvariants">OCaml
+record</a>.
+Since Melange compiles records into JavaScript objects, the most common way to
+bind to JavaScript objects is using records.</p>
+<pre><code class="language-ocaml">type person = {
+  name : string;
+  friends : string array;
+  age : int;
+}
+
+external john : person = &quot;john&quot; [@@bs.module &quot;MySchool&quot;]
+let john_name = john.name
+</code></pre>
+<p>This is the generated JavaScript:</p>
+<pre><code class="language-js">var MySchool = require(&quot;MySchool&quot;);
+
+var john_name = MySchool.john.name;
+</code></pre>
+<p>External functions are documented in the <a href="#foreign-function-interface">"Foreign function
+interface"</a> section. The <code>bs.module</code> attribute is
+documented <a href="#using-functions-from-other-javascript-modules">here</a>.</p>
+<p>If you want or need to use different field names on the Melange and the
+JavaScript sides, you can use the <code>bs.as</code> decorator:</p>
+<pre><code class="language-ocaml">type action = {
+  type_ : string [@bs.as &quot;type&quot;]
+}
+
+let action = { type_ = &quot;ADD_USER&quot; }
+</code></pre>
+<p>Which generates the JavaScript code:</p>
+<pre><code class="language-js">var action = {
+  type: &quot;ADD_USER&quot;
+};
+</code></pre>
+<p>This is useful to map to JavaScript attribute names that cannot be expressed in
+Melange, for example, where the JavaScript name we want to generate is a
+<a href="https://v2.ocaml.org/manual/lex.html#sss:keywords">reserved keyword</a>.</p>
+<p>It is also possible to map a Melange record to a JavaScript array by passing
+indices to the <code>bs.as</code> decorator:</p>
+<pre><code class="language-ocaml">type t = {
+  foo : int; [@bs.as &quot;0&quot;]
+  bar : string; [@bs.as &quot;1&quot;]
+}
+
+let value = { foo = 7; bar = &quot;baz&quot; }
+</code></pre>
+<p>And its JavaScript generated code:</p>
+<pre><code class="language-js">var value = [
+  7,
+  &quot;baz&quot;
+];
+</code></pre>
+<h4 id="using-jst-objects">Using <code>Js.t</code> objects</h4>
+<p>Alternatively to records, Melange offers another type that can be used to
+produce JavaScript objects. This type is <code>'a Js.t</code>, where <code>'a</code> is an <a href="https://v2.ocaml.org/manual/objectexamples.html">OCaml
+object</a>.</p>
+<p>The advantage of objects versus records is that no type declaration is needed in
+advance, which can be helpful for prototyping or quickly generating JavaScript
+object literals.</p>
+<p>Melange provides some ways to create <code>Js.t</code> object values, as well as accessing
+the properties inside them. To create values, the <code>[%bs.obj]</code> extension is used,
+and the <code>##</code> infix operator allows to read from the object properties:</p>
+<pre><code class="language-ocaml">let john = [%bs.obj { name = &quot;john&quot;; age = 99 }]
+let t = john##name
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">var john = {
+  name: &quot;john&quot;,
+  age: 99
+};
+
+var t = john.name;
+</code></pre>
+<p>Note that object types allow for some flexibility that the record types do not
+have. For example, an object type can be coerced to another with fewer values or
+methods, while it is impossible to coerce a record type to another one with
+fewer fields. So different object types that share some methods can be mixed in
+a data structure where only their common methods are visible.</p>
+<p>To give an example, one can create a function that operates in all the object
+types that include a field <code>name</code> that is of type string, e.g.:</p>
+<pre><code class="language-ocaml">let name_extended obj = obj##name ^ &quot; wayne&quot;
+
+let one = name_extended [%bs.obj { name = &quot;john&quot;; age = 99 }]
+let two = name_extended [%bs.obj { name = &quot;jane&quot;; address = &quot;1 infinite loop&quot; }]
+</code></pre>
+<p>To read more about objects and polymorphism we recommend checking the <a href="https://ocaml.org/docs/objects">OCaml
+docs</a> or the <a href="https://v2.ocaml.org/manual/objectexamples.html">OCaml
+manual</a>.</p>
+<h4 id="bind-to-object-properties">Bind to object properties</h4>
+<p>If you need to bind only to the property of a JavaScript object, you can use
+<code>bs.get</code> and <code>bs.set</code> to access it using the dot notation <code>.</code>:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` value *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+
+external set_title : document -&gt; string -&gt; unit = &quot;title&quot; [@@bs.set]
+external get_title : document -&gt; string = &quot;title&quot; [@@bs.get]
+
+let current = get_title document
+let () = set_title document &quot;melange&quot;
+</code></pre>
+<p>This generates:</p>
+<pre><code class="language-javascript">var current = document.title;
+document.title = &quot;melange&quot;;
+</code></pre>
+<p>Alternatively, if some dynamism is required on the way the property is accessed,
+you can use <code>bs.get_index</code> and <code>bs.set_index</code> to access it using the bracket
+notation <code>[]</code>:</p>
+<pre><code class="language-ocaml">type t
+external create : int -&gt; t = &quot;Int32Array&quot; [@@bs.new]
+external get : t -&gt; int -&gt; int = &quot;get&quot; [@@bs.get_index]
+external set : t -&gt; int -&gt; int -&gt; unit = &quot;set&quot; [@@bs.set_index]
+
+let () =
+  let i32arr = (create 3) in
+  set i32arr 0 42;
+  Js.log (get i32arr 0)
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">var i32arr = new Int32Array(3);
+i32arr[0] = 42;
+console.log(i32arr[0]);
+</code></pre>
+<h3 id="objects-with-dynamic-shape-dictionary-like">Objects with dynamic shape (dictionary-like)</h3>
+<p>Sometimes JavaScript objects are used as dictionaries. In these cases:</p>
+<ul>
+<li>All values stored in the object belong to the same type</li>
+<li>Key-value pairs can be added or removed at runtime</li>
+</ul>
+<p>For this particular use case of JavaScript objects, Melange exposes a specific
+type <code>Js.Dict.t</code>. The values and functions to work with values of this type are
+defined in the <a href="#todo-fix-me.md"><code>Js.Dict</code></a> module, with operations like <code>get</code>,
+<code>set</code>, etc.</p>
+<p>Values of the type <code>Js.Dict.t</code> compile to JavaScript objects.</p>
+<h3 id="javascript-classes">JavaScript classes</h3>
+<p>JavaScript classes are special kinds of objects. To interact with classes,
+Melange exposes <code>bs.new</code> to emulate e.g. <code>new Date()</code>:</p>
+<pre><code class="language-ocaml">type t
+external create_date : unit -&gt; t = &quot;Date&quot; [@@bs.new]
+let date = create_date ()
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">var date = new Date();
+</code></pre>
+<p>You can chain <code>bs.new</code> and <code>bs.module</code> if the JavaScript class you want to work
+with is in a separate JavaScript module:</p>
+<pre><code class="language-ocaml">type t
+external book : unit -&gt; t = &quot;Book&quot; [@@bs.new] [@@bs.module]
+let myBook = book ()
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">var Book = require(&quot;Book&quot;);
+var myBook = new Book();
+</code></pre>
+<h2 id="bind-to-global-javascript-functions-or-values">Bind to global JavaScript functions or values</h2>
+<p>Binding to a JavaScript function makes use of <code>external</code>, like with objects. If
+we want to bind to a function available globally, Melange offers the <code>bs.val</code>
+attribute:</p>
+<pre><code class="language-ocaml">external imul : int -&gt; int -&gt; int = &quot;Math.imul&quot; [@@bs.val]
+</code></pre>
+<p>Or for <code>document</code>:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` value *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+</code></pre>
+<h3 id="using-functions-from-other-javascript-modules">Using functions from other JavaScript modules</h3>
+<p><code>bs.module</code> is like the <code>bs.val</code> attribute, but it accepts a string with the
+name of the module, or the relative path to it.</p>
+<pre><code class="language-ocaml">external dirname : string -&gt; string = &quot;dirname&quot; [@@bs.module &quot;path&quot;]
+let root = dirname &quot;/User/github&quot;
+</code></pre>
+<p>Generates:</p>
+<pre><code class="language-js">var Path = require(&quot;path&quot;);
+var root = Path.dirname(&quot;/User/github&quot;);
+</code></pre>
+<h3 id="labeled-arguments">Labeled arguments</h3>
+<p>OCaml has <a href="https://v2.ocaml.org/manual/lablexamples.html">labeled arguments</a>,
+which can also be optional, and work with <code>external</code> as well.</p>
+<p>Labeled arguments can be useful to provide more information about the arguments
+of a JavaScript function that is called from Melange.</p>
+<p>Let’s say we have the following JavaScript function, that we want to call from
+Melange:</p>
+<pre><code class="language-js">// MyGame.js
+
+function draw(x, y, border) {
+  // let’s assume `border` is optional and defaults to false
+}
+draw(10, 20)
+draw(20, 20, true)
+</code></pre>
+<p>When writing Melange bindings, we can add labeled arguments to make things more
+clear:</p>
+<pre><code class="language-ocaml">external draw : x:int -&gt; y:int -&gt; ?border:bool -&gt; unit -&gt; unit = &quot;draw&quot;
+  [@@module &quot;MyGame&quot;]
+
+let () = draw ~x:10 ~y:20 ~border:true ()
+let () = draw ~x:10 ~y:20 ()
+</code></pre>
+<p>Generates:</p>
+<pre><code class="language-js">var MyGame = require(&quot;MyGame&quot;);
+
+MyGame.draw(10, 20, true);
+MyGame.draw(10, 20, undefined);
+</code></pre>
+<p>The generated JavaScript function is the same, but now the usage in Melange is
+much clearer.</p>
+<p><strong>Note</strong>: in this particular case, a final param of type unit, <code>()</code> must be
+added after <code>border</code>, since <code>border</code> is an optional argument at the last
+position. Not having the last param <code>unit</code> would lead to a warning, which is
+explained in detail <a href="https://ocaml.org/docs/labels#warning-this-optional-argument-cannot-be-erased">in the OCaml
+documentation</a>.</p>
+<p>Note that you can freely reorder the labeled arguments when applying the
+function on the Melange side. The generated code will maintain the original
+order that was used when declaring the function:</p>
+<pre><code class="language-ocaml">external draw : x:int -&gt; y:int -&gt; ?border:bool -&gt; unit -&gt; unit = &quot;draw&quot;
+  [@@module &quot;MyGame&quot;]
+let () = draw ~x:10 ~y:20 ()
+let () = draw ~y:20 ~x:10 ()
+</code></pre>
+<p>Generates:</p>
+<pre><code class="language-js">var MyGame = require(&quot;MyGame&quot;);
+
+MyGame.draw(10, 20, undefined);
+MyGame.draw(10, 20, undefined);
+</code></pre>
+<h3 id="calling-an-object-method">Calling an object method</h3>
+<p>If we need to call a JavaScript method, Melange provides the attribute
+<code>bs.send</code>:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` global *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external get_by_id : document -&gt; string -&gt; Dom.element = &quot;getElementById&quot;
+  [@@bs.send]
+
+let el = get_by_id document &quot;my-id&quot;
+</code></pre>
+<p>Generates:</p>
+<pre><code class="language-js">var el = document.getElementById(&quot;my-id&quot;);
+</code></pre>
+<p>When using <code>bs.send</code>, the first argument will be the object that holds the
+property with the function we want to call. This combines well with the pipe
+first operator <code>|.</code>, see the <a href="#chaining">"Chaining"</a> section below.</p>
+<p>If we want to design our bindings to be used with OCaml pipe last operator <code>|&gt;</code>,
+there is an alternate <code>bs.send.pipe</code> attribute. Let’s rewrite the example above
+using it:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` global *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external get_by_id : string -&gt; Dom.element = &quot;getElementById&quot;
+  [@@bs.send.pipe: document]
+
+let el = get_by_id &quot;my-id&quot; document
+</code></pre>
+<p>Generates the same code as <code>bs.send</code>:</p>
+<pre><code class="language-js">var el = document.getElementById(&quot;my-id&quot;);
+</code></pre>
+<h4 id="chaining">Chaining</h4>
+<p>It is common to find this kind of API in JavaScript: <code>foo().bar().baz()</code>. This
+kind of API can be designed with Melange externals. Depending on which
+convention we want to use, there are two attributes available:</p>
+<ul>
+<li>For a data-first convention, the <code>bs.send</code> attribute, in combination with <a href="todo-fix-me.md">the
+  pipe first operator</a> <code>|.</code></li>
+<li>For a data-last convention, the <code>bs.send.pipe</code> attribute, in combination with
+  OCaml pipe last operator <code>|&gt;</code>.</li>
+</ul>
+<p>For further details about the differences in the conventions and the trade-offs,
+one can refer to <a href="https://www.javierchavarri.com/data-first-and-data-last-a-comparison/">this "Data-first and data-last" blog
+post</a>.</p>
+<p>Let’s see first an example of chaining using data-first convention with the pipe
+first operator <code>|.</code>:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` global *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external get_by_id : document -&gt; string -&gt; Dom.element = &quot;getElementById&quot;
+  [@@bs.send]
+external get_by_classname : Dom.element -&gt; string -&gt; Dom.element
+  = &quot;getElementsByClassName&quot;
+  [@@bs.send]
+
+let el = document |. get_by_id &quot;my-id&quot; |. get_by_classname &quot;my-class&quot;
+</code></pre>
+<p>Will generate:</p>
+<pre><code class="language-javascript">var el = document.getElementById(&quot;my-id&quot;).getElementsByClassName(&quot;my-class&quot;);
+</code></pre>
+<p>Now with pipe last operator <code>|&gt;</code>:</p>
+<pre><code class="language-ocaml">(* Abstract type for the `document` global *)
+type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external get_by_id : string -&gt; Dom.element = &quot;getElementById&quot;
+  [@@bs.send.pipe: document]
+external get_by_classname : string -&gt; Dom.element = &quot;getElementsByClassName&quot;
+  [@@bs.send.pipe: Dom.element]
+
+let el = document |&gt; get_by_id &quot;my-id&quot; |&gt; get_by_classname &quot;my-class&quot;
+</code></pre>
+<p>Will generate the same JavaScript as the pipe first version:</p>
+<pre><code class="language-javascript">var el = document.getElementById(&quot;my-id&quot;).getElementsByClassName(&quot;my-class&quot;);
+</code></pre>
+<h3 id="variadic-function-arguments">Variadic function arguments</h3>
+<p>Sometimes JavaScript functions take an arbitrary amount of arguments. For these
+cases, Melange provides the <code>bs.variadic</code> attribute, which can be attached to
+the <code>external</code> declaration. However, there is one caveat: all the variadic
+arguments need to belong to the same type.</p>
+<pre><code class="language-ocaml">external join : string array -&gt; string = &quot;join&quot;
+  [@@bs.module &quot;path&quot;] [@@bs.splice]
+let v = join [| &quot;a&quot;; &quot;b&quot; |]
+</code></pre>
+<p>Generates:</p>
+<pre><code class="language-js">var Path = require(&quot;path&quot;);
+var v = Path.join(&quot;a&quot;, &quot;b&quot;);
+</code></pre>
+<p>If more dynamism is needed, there is a way to inject elements with different
+types in the array and still have Melange compile to JavaScript values that are
+not wrapped using the OCaml
+<a href="https://v2.ocaml.org/manual/attributes.html"><code>unboxed</code></a> attribute, which is
+documented <a href="todo-fix-me.md">in a section below</a>:</p>
+<pre><code class="language-ocaml">type hide = Hide : 'a -&gt; hide [@@unboxed]
+
+external join : hide array -&gt; string = &quot;join&quot; [@@bs.module &quot;path&quot;] [@@bs.splice]
+
+let v = join [| Hide &quot;a&quot;; Hide 2 |]
+</code></pre>
+<p>Compiles to:</p>
+<pre><code class="language-javascript">var Path = require(&quot;path&quot;);
+
+var v = Path.join(&quot;a&quot;, 2);
+</code></pre>
+<h3 id="bing-to-a-polymorphic-function">Bing to a polymorphic function</h3>
+<p>Some JavaScript libraries will define functions where the arguments can vary on
+both type and shape. There are two approaches to bind to those, depending on how
+dynamic they are.</p>
+<h4 id="approach-1-multiple-external-functions">Approach 1: Multiple external functions</h4>
+<p>If it is possible to enumerate the many forms an overloaded JavaScript function
+can take, a flexible approach is to bind to each form individually:</p>
+<pre><code class="language-ocaml">external drawCat : unit -&gt; unit = &quot;draw&quot; [@@bs.module &quot;MyGame&quot;]
+external drawDog : giveName:string -&gt; unit = &quot;draw&quot; [@@bs.module &quot;MyGame&quot;]
+external draw : string -&gt; useRandomAnimal:bool -&gt; unit = &quot;draw&quot;
+  [@@bs.module &quot;MyGame&quot;]
+</code></pre>
+<p>Note how all three externals bind to the same JavaScript function, <code>draw</code>.</p>
+<h4 id="approach-2-polymorphic-variant-bsunwrap">Approach 2: Polymorphic variant + <code>bs.unwrap</code></h4>
+<p>In some cases, the function has a constant number of arguments but the type of
+the argument can vary. For cases like this, we can model the argument as a
+variant and use the <code>bs.unwrap</code> attribute in the external.</p>
+<p>Let’s say we want to bind to the following JavaScript function:</p>
+<pre><code class="language-js">function padLeft(value, padding) {
+  if (typeof padding === &quot;number&quot;) {
+    return Array(padding + 1).join(&quot; &quot;) + value;
+  }
+  if (typeof padding === &quot;string&quot;) {
+    return padding + value;
+  }
+  throw new Error(`Expected string or number, got '${padding}'.`);
+}
+</code></pre>
+<p>As the <code>padding</code> argument can be either a number or a string, we can use
+<code>bs.unwrap</code> to define it. It is important to note that <code>bs.unwrap</code> imposes
+certain requirements on the type it is applied to:</p>
+<ul>
+<li>It needs to be a <a href="https://v2.ocaml.org/manual/polyvariant.html">polymorphic
+  variant</a></li>
+<li>Its definition needs to be inlined</li>
+<li>Each variant tag needs to have an argument</li>
+<li>The variant type can not be opened (can’t use <code>&gt;</code>)</li>
+</ul>
+<pre><code class="language-ocaml">external padLeft:
+  string
+  -&gt; ([ `Str of string
+      | `Int of int
+      ] [@bs.unwrap])
+  -&gt; string
+  = &quot;padLeft&quot; [@@bs.val]
+
+let _ = padLeft &quot;Hello World&quot; (`Int 4)
+let _ = padLeft &quot;Hello World&quot; (`Str &quot;Message from Melange: &quot;)
+</code></pre>
+<p>Which produces the following JavaScript:</p>
+<pre><code class="language-js">padLeft(&quot;Hello World&quot;, 4);
+padLeft(&quot;Hello World&quot;, &quot;Message from Melange: &quot;);
+</code></pre>
+<p>As we saw in the <a href="#non-shared-data-types">Non-shared data types</a> section, we
+should rather avoid passing variants directly to the JavaScript side. By using
+<code>bs.unwrap</code> we get the best of both worlds: from Melange we can use variants,
+while JavaScript gets the raw values inside them.</p>
+<h3 id="using-polymorphic-variants-to-bind-to-enums">Using polymorphic variants to bind to enums</h3>
+<p>Some JavaScript APIs take a limited subset of values as input. For example,
+Node’s <code>fs.readFileSync</code> second argument can only take a few given string
+values: <code>"ascii"</code>, <code>"utf8"</code>, etc. Some other functions can take values from a
+few given integers, like the <code>createStatusBarItem</code> function in VS Code API,
+which can take an alignment parameter that can only be <a href="https://github.com/Microsoft/vscode/blob/2362ec665c84a1519162b50c36ed4f29d1e20f62/src/vs/vscode.d.ts#L4098-L4109"><code>1</code> or
+<code>2</code></a>.</p>
+<p>One could still type these parameters as just <code>string</code> or <code>int</code>, but this would
+not prevent consumers of the external function from calling it using values that
+are unsupported by the JavaScript function. Let’s see how we can use polymorphic
+variants to avoid runtime errors.</p>
+<p>If the values are strings, we can use the <code>bs.string</code> attribute:</p>
+<pre><code class="language-ocaml">external read_file_sync :
+  name:string -&gt; ([ `utf8 | `ascii ][@bs.string]) -&gt; string = &quot;readFileSync&quot;
+  [@@bs.module &quot;fs&quot;]
+
+let _ = read_file_sync ~name:&quot;xx.txt&quot; `ascii
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">var Fs = require(&quot;fs&quot;);
+Fs.readFileSync(&quot;xx.txt&quot;, &quot;ascii&quot;);
+</code></pre>
+<p>This technique can be combined with the <code>bs.as</code> attribute to modify the strings
+produced from the polymorphic variant values. For example:</p>
+<pre><code class="language-ocaml">type document
+type style
+
+external document : document = &quot;document&quot; [@@bs.val]
+external get_by_id : document -&gt; string -&gt; Dom.element = &quot;getElementById&quot;
+  [@@bs.send]
+external style : Dom.element -&gt; style = &quot;style&quot; [@@bs.get]
+external transition_timing_function :
+  style -&gt;
+  [ `ease
+  | `easeIn [@bs.as &quot;ease-in&quot;]
+  | `easeOut [@bs.as &quot;ease-out&quot;]
+  | `easeInOut [@bs.as &quot;ease-in-out&quot;]
+  | `linear
+  ] -&gt;
+  unit = &quot;transitionTimingFunction&quot;
+  [@@bs.set]
+
+let element_style = style (get_by_id document &quot;my-id&quot;)
+let () = transition_timing_function element_style `easeIn
+
+This will generate:
+
+```javascript
+var element_style = document.getElementById(&quot;my-id&quot;).style;
+
+element_style.transitionTimingFunction = &quot;ease-in&quot;;
+</code></pre>
+<p>Aside from producing string values, Melange also offers <code>bs.int</code> to produce
+integer values. <code>bs.int</code> can also be combined with <code>bs.as</code>:</p>
+<pre><code class="language-ocaml">external test_int_type :
+  ([ `on_closed | `on_open [@bs.as 20] | `in_bin ][@bs.int]) -&gt; int
+  = &quot;testIntType&quot;
+  [@@bs.val]
+
+let value = test_int_type `on_open
+</code></pre>
+<p>In this example, <code>on_closed</code> will be encoded as 0, <code>on_open</code> will be 20 due to
+the attribute <code>bs.as</code> and <code>in_bin</code> will be 21, because if no <code>bs.as</code> annotation
+is provided for a variant tag, the compiler continues assigning values counting
+up from the previous one.</p>
+<p>This code generates:</p>
+<pre><code class="language-js">var value = testIntType(20);
+</code></pre>
+<h3 id="using-polymorphic-variants-to-bind-to-event-listeners">Using polymorphic variants to bind to event listeners</h3>
+<p>Polymorphic variants can also be used to wrap event listeners, or any other kind
+of callback, for example:</p>
+<pre><code class="language-ocaml">type readline
+
+external on :
+  readline -&gt;
+  ([ `close of unit -&gt; unit | `line of string -&gt; unit ][@bs.string]) -&gt;
+  readline = &quot;on&quot;
+  [@@bs.send]
+
+let register rl =
+  rl |. on (`close (fun event -&gt; ())) |. on (`line (fun line -&gt; Js.log line))
+</code></pre>
+<p>This generates:</p>
+<pre><code class="language-js">function register(rl) {
+  return rl
+    .on(&quot;close&quot;, function($$event) {})
+    .on(&quot;line&quot;, function(line) {
+      console.log(line);
+    });
+}
+</code></pre>
+<h3 id="constant-values-as-arguments">Constant values as arguments</h3>
+<p>Sometimes we want to call a JavaScript function and make sure one of the
+arguments is always constant. For this, the <code>[@bs.as]</code> attribute can be combined
+with the wildcard pattern <code>_</code>:</p>
+<pre><code class="language-ocaml">external process_on_exit : (_[@bs.as &quot;exit&quot;]) -&gt; (int -&gt; unit) -&gt; unit
+  = &quot;process.on&quot;
+  [@@bs.val]
+
+let () =
+  process_on_exit (fun exit_code -&gt;
+    Js.log (&quot;error code: &quot; ^ string_of_int exit_code))
+</code></pre>
+<p>This generates:</p>
+<pre><code class="language-js">process.on(&quot;exit&quot;, function (exitCode) {
+  console.log(&quot;error code: &quot; + exitCode.toString());
+});
+</code></pre>
+<p>The <code>bs.as "exit"</code> and the wildcard <code>_</code> pattern together will tell Melange to
+compile the first argument of the JavaScript function to the string <code>"exit"</code>.</p>
+<p>You can also use any JSON literal by passing a quoted string to <code>bs.as</code>: <code>bs.as
+{json|true|json}</code> or <code>bs.as {json|{"name": "John"}|json}</code>.</p>
+<h3 id="binding-to-callbacks">Binding to callbacks</h3>
+<p>In OCaml, all functions have arity 1. This means that if you define a function
+like this:</p>
+<pre><code class="language-ocaml">let add x y = x + y
+</code></pre>
+<p>Its type will be <code>int -&gt; int -&gt; int</code>. This means that one can partially apply
+<code>add</code> by calling <code>add 1</code>, which will return another function expecting the
+second argument of the addition. This kind of functions are called "curried"
+functions, more information about currying in OCaml can be found in <a href="https://cs3110.github.io/textbook/chapters/hop/currying.html">this
+chapter</a> of the
+"OCaml Programming: Correct + Efficient + Beautiful" book.</p>
+<p>This is incompatible with how function calling conventions work in JavaScript,
+where all function calls always apply all the arguments. To continue the
+example, let’s say we have an <code>add</code> function implemented in JavaScript, similar
+to the one above:</p>
+<pre><code class="language-javascript">var add = function (a, b) {
+    return a + b;
+};
+</code></pre>
+<p>If we call <code>add(1)</code>, the function will be totally applied, with <code>b</code> having
+<code>undefined</code> value. And as JavaScript will try to add <code>1</code> with <code>undefined</code>, we
+will get <code>NaN</code> as a result.</p>
+<p>To illustrate this difference and how it affects Melange bindings, let’s say we
+want to write bindings for a JavaScript function like this:</p>
+<pre><code class="language-javascript">function map (a, b, f){
+  var i = Math.min(a.length, b.length);
+  var c = new Array(i);
+  for(var j = 0; j &lt; i; ++j){
+    c[j] = f(a[i],b[i])
+  }
+  return c ;
+}
+</code></pre>
+<p>A naive external function declaration could be as below:</p>
+<pre><code class="language-ocaml">external map : 'a array -&gt; 'b array -&gt; ('a -&gt; 'b -&gt; 'c) -&gt; 'c array = &quot;map&quot;
+  [@@bs.val]
+</code></pre>
+<p>Unfortunately, this is not completely correct. The issue is in the callback
+function, with type <code>'a -&gt; 'b -&gt; 'c</code>. This means that <code>map</code> will expect a
+function like <code>add</code> described above. But as we said, in OCaml, having two
+arguments means just to have two functions that take one argument.</p>
+<p>Let’s rewrite <code>add</code> to make the problem a bit more clear:</p>
+<pre><code class="language-ocaml">let add x = let partial y = x + y in partial
+</code></pre>
+<p>This will be compiled to:</p>
+<pre><code class="language-javascript">function add(x) {
+  return (function (y) {
+    return x + y | 0;
+  });
+}
+</code></pre>
+<p>Now if we ever used our external function <code>map</code> with our <code>add</code> function by
+calling <code>map arr1 arr2 add</code> it would not work as expected. JavaScript function
+application does not work the same as in OCaml, so the function call in the
+<code>map</code> implementation, <code>f(a[i],b[i])</code>, would be applied over the outer JavaScript
+function <code>add</code>, which only takes one argument <code>x</code>, and <code>b[i]</code> would be just
+discarded. The value returned from the operation would not be the addition of
+the two numbers, but rather the inner anonymous callback.</p>
+<p>To solve this mismatch between OCaml and JavaScript functions and their
+application, Melange provides a special attribute <code>@bs</code> that can be used with
+external functions.</p>
+<p>In the example above:</p>
+<pre><code class="language-ocaml">external map : 'a array -&gt; 'b array -&gt; (('a -&gt; 'b -&gt; 'c)[@bs]) -&gt; 'c array
+  = &quot;map&quot;
+  [@@bs.val]
+</code></pre>
+<p>Here <code>('a -&gt; 'b -&gt; 'c [@bs])</code> will be interpreted as having arity 2, in general,
+<code>'a0 -&gt; 'a1 ...​ 'aN -&gt; 'b0 [@bs]</code> is the same as <code>'a0 -&gt; 'a1 ...​ 'aN -&gt; 'b0</code>
+except the former’s arity is guaranteed to be N while the latter is unknown.</p>
+<p>If we try now to call <code>map</code> using <code>add</code>:</p>
+<pre><code class="language-ocaml">let add x y = x + y
+let _ = map [||] [||] add
+</code></pre>
+<p>We will get an error:</p>
+<pre><code class="language-bash">let _ = map [||] [||] add
+                      ^^^
+This expression has type int -&gt; int -&gt; int
+but an expression was expected of type ('a -&gt; 'b -&gt; 'c) Js.Fn.arity2
+</code></pre>
+<p>To solve this, we add <code>@bs</code> in the function definition as well:</p>
+<pre><code class="language-ocaml">let add = fun [@bs] x y -&gt; x + y
+</code></pre>
+<p>Annotating function definitions can be quite cumbersome when writing a lot of
+externals.</p>
+<p>To work around the verbosity, Melange offers another attribute called
+<code>bs.uncurry</code>.</p>
+<p>Let’s see how we could use it in the previous example. We just need to replace
+<code>bs</code> with <code>bs.uncurry</code>:</p>
+<pre><code class="language-ocaml">external map :
+  'a array -&gt; 'b array -&gt; (('a -&gt; 'b -&gt; 'c)[@bs.uncurry]) -&gt; 'c array = &quot;map&quot;
+  [@@bs.val]
+</code></pre>
+<p>Now if we try to call <code>map</code> with a regular <code>add</code> function:</p>
+<pre><code class="language-ocaml">let add x y = x + y
+let _ = map [||] [||] add
+</code></pre>
+<p>Everything works fine now, without having to attach any attributes to <code>add</code>.</p>
+<p>The main difference between <code>bs</code> and <code>bs.uncurry</code> is that the latter only works
+with externals. <code>bs.uncurry</code> is the recommended option to use for bindings,
+while <code>bs</code> remains useful for those use cases where performance is crucial and
+we want the JavaScript functions generated from OCaml ones to not be applied
+partially.</p>
+<h3 id="modeling-this-based-callbacks">Modeling <code>this</code>-based Callbacks</h3>
+<p>Many JavaScript libraries have callbacks which rely on the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"><code>this</code>
+keyword</a>,
+for example:</p>
+<pre><code class="language-js">x.onload = function(v) {
+  console.log(this.response + v)
+}
+</code></pre>
+<p>Inside the <code>x.onload</code> callback, <code>this</code> would be pointing to <code>x</code>. It would not be
+correct to declare <code>x.onload</code> of type <code>unit -&gt; unit</code>. Instead, Melange
+introduces a special attribute, <code>bs.this</code>, which allows to type <code>x</code> as this:</p>
+<pre><code class="language-ocaml">type x
+external x : x = &quot;x&quot; [@@bs.val]
+external set_onload : x -&gt; ((x -&gt; int -&gt; unit)[@bs.this]) -&gt; unit = &quot;onload&quot;
+  [@@bs.set]
+external resp : x -&gt; int = &quot;response&quot; [@@bs.get]
+let _ =
+  set_onload x
+    begin
+      fun [@bs.this] o v -&gt; Js.log (resp o + v)
+    end
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-javascript">x.onload = function (v) {
+  var o = this;
+  console.log((o.response + v) | 0);
+};
+</code></pre>
+<p>Note that the first argument will be reserved for <code>this</code>.</p>
+<h3 id="wrapping-returned-nullable-values">Wrapping returned nullable values</h3>
+<p>For JavaScript functions that return a value that can be <code>undefined</code> or <code>null</code>,
+Melange provides <code>bs.return</code>. Using this attribute will have Melange generated
+code automatically convert the value returned by the function to an <code>option</code>
+type that can be used safely from Melange side, avoiding the need to use manual
+conversion functions like <code>Js.Nullable.toOption</code> and such.</p>
+<pre><code class="language-ocaml">type element
+type document
+external get_by_id : document -&gt; string -&gt; element option = &quot;getElementById&quot;
+  [@@bs.send] [@@bs.return nullable]
+
+let test document =
+  let elem = get_by_id document &quot;header&quot; in
+  match elem with
+  | None -&gt; 1
+  | Some _element -&gt; 2
+</code></pre>
+<p>Which generates:</p>
+<pre><code class="language-js">function test($$document) {
+  var elem = $$document.getElementById(&quot;header&quot;);
+  if (elem == null) {
+    return 1;
+  } else {
+    return 2;
+  }
+}
+</code></pre>
+<p>The <code>bs.return</code> attribute takes an attribute payload, as seen with <code>[@@bs.return
+nullable]</code> above. Currently 4 directives are supported: <code>null_to_opt</code>,
+<code>undefined_to_opt</code>, <code>nullable</code> and <code>identity</code>.</p>
+<p><code>nullable</code> is encouraged, as it will convert from <code>null</code> and <code>undefined</code> to
+<code>option</code> type.</p>
+<!-- When the return type is unit: the compiler will append its return value with an OCaml unit literal to make sure it does return unit. Its main purpose is to make the user consume FFI in idiomatic OCaml code, the cost is very very small and the compiler will do smart optimizations to remove it when the returned value is not used (mostly likely). -->
+
+<p><code>identity</code> will make sure that compiler will do nothing about the returned
+value. It is rarely used, but introduced here for debugging purposes.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../build-system/" class="btn btn-neutral float-left" title="Build system"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../api/" class="btn btn-neutral float-right" title="API">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/melange-re/documentation-site/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../build-system/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../js/print-site.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
