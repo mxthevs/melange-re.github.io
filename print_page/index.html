@@ -1726,11 +1726,9 @@ external transition_timing_function :
 
 let element_style = style (get_by_id document &quot;my-id&quot;)
 let () = transition_timing_function element_style `easeIn
-
-This will generate:
-
-```javascript
-var element_style = document.getElementById(&quot;my-id&quot;).style;
+</code></pre>
+<p>This will generate:</p>
+<pre><code class="language-javascript">var element_style = document.getElementById(&quot;my-id&quot;).style;
 
 element_style.transitionTimingFunction = &quot;ease-in&quot;;
 </code></pre>
