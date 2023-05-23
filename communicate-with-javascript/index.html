@@ -89,6 +89,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#records">Records</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#regular-expressions">Regular expressions</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#non-shared-data-types">Non-shared data types</a>
@@ -286,8 +288,12 @@ to and from JavaScript.</p>
 <td>boolean</td>
 </tr>
 <tr>
-<td>Js.Nullable.t</td>
+<td><a href="todo-fix-me.md">Js.Nullable.t</a></td>
 <td><code>null</code> / <code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="todo-fix-me.md">Js.Re.t</a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp"><code>RegExp</code></a></td>
 </tr>
 <tr>
 <td>Option.t <code>None</code></td>
@@ -450,6 +456,18 @@ non-shared data types (like variants), these values should be transformed
 separately, and not be directly used in JavaScript.</p>
 <p>Extensive documentation about interfacing with JavaScript objects using records
 can be found in <a href="#bind-to-js-object">the section below</a>.</p>
+<h3 id="regular-expressions">Regular expressions</h3>
+<p>Regular expressions created using the <code>%bs.re</code> extension node compile to their
+JavaScript counterpart.</p>
+<p>For example:</p>
+<pre><code class="language-ocaml">let r = [%bs.re &quot;/b/g&quot;]
+</code></pre>
+<p>Will compile to:</p>
+<pre><code class="language-js">var r = /b/g;
+</code></pre>
+<p>A regular expression like the above is of type <code>Js.Re.t</code>. The
+<a href="todo-fix-me.md"><code>Js.Re</code></a> module provides the bindings to the JavaScript
+functions that operate over regular expressions.</p>
 <h2 id="non-shared-data-types">Non-shared data types</h2>
 <p>The following types differ too much between Melange and JavaScript, so while
 they can always be manipulated from JavaScript, it is recommended to transform
@@ -590,7 +608,7 @@ and more:</p>
 <p><strong>Extensions:</strong></p>
 <p>In order to use any of these extensions, you will have to add the melange PPX
 preprocessor to your project. To do so, add the following to the <code>dune</code> file:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange)
  (preprocess
@@ -599,11 +617,11 @@ preprocessor to your project. To do so, add the following to the <code>dune</cod
 <p>The same field <code>preprocess</code> can be added to <code>melange.emit</code>.</p>
 <p>Here is the list of all extensions supported by Melange:</p>
 <ul>
-<li><code>bs.debugger</code>: insert <code>debugger</code> statements</li>
-<li><code>bs.external</code>: read global values</li>
+<li><a href="#debugger"><code>bs.debugger</code></a>: insert <code>debugger</code> statements</li>
+<li><a href="#detect-global-variables"><code>bs.external</code></a>: read global values</li>
 <li><a href="#using-jst-objects"><code>bs.obj</code></a>: create JavaScript object literals</li>
-<li><code>bs.raw</code>: write raw JavaScript code</li>
-<li><code>bs.re</code>: insert regular expressions</li>
+<li><a href="#generate-raw-javascript"><code>bs.raw</code></a>: write raw JavaScript code</li>
+<li><a href="#regular-expressions"><code>bs.re</code></a>: insert regular expressions</li>
 </ul>
 <h2 id="foreign-function-interface">Foreign function interface</h2>
 <p>Most of the system that Melange exposes to communicate with JavaScript is built
@@ -1504,7 +1522,7 @@ except the former’s arity is guaranteed to be N while the latter is unknown.</
 let _ = map [||] [||] add
 </code></pre>
 <p>We will get an error:</p>
-<pre><code class="language-bash">let _ = map [||] [||] add
+<pre><code class="language-text">let _ = map [||] [||] add
                       ^^^
 This expression has type int -&gt; int -&gt; int
 but an expression was expected of type ('a -&gt; 'b -&gt; 'c) Js.Fn.arity2

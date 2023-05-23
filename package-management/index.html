@@ -203,7 +203,7 @@ page</a> on installation. Most of the
 time, we can get it from your package manager. Otherwise, binaries are provided
 for every platform.</p>
 <p>There is a necessary first step before using opam:</p>
-<pre><code class="language-bash">opam init -a
+<pre><code class="language-text">opam init -a
 </code></pre>
 <p>Here is what the documentation of the <code>opam init</code> command says:</p>
 <blockquote>
@@ -238,7 +238,7 @@ or project.</p>
 init</code> or <code>yarn add</code> does not exist in opam, so the updates in <code>.opam</code> files have
 to be done by hand.</p>
 <p>A minimal <code>.opam</code> file looks like this:</p>
-<pre><code>opam-version: &quot;2.0&quot;
+<pre><code class="language-text">opam-version: &quot;2.0&quot;
 name: &quot;my-app&quot;
 authors: &quot;Louis&quot;
 homepage: &quot;https://github.com/khady/example&quot;
@@ -261,28 +261,28 @@ switch exists already, we can look for a <code>_opam</code> directory at the roo
 project or use the <code>opam switch</code> command to identify if a switch already exists
 in the project folder.</p>
 <p>If it does not exist, we can create it with:</p>
-<pre><code class="language-bash">opam switch create . 4.14.1 --deps-only
+<pre><code class="language-text">opam switch create . 4.14.1 --deps-only
 </code></pre>
 <p>If it exists, we can install the dependencies of the project with:</p>
-<pre><code class="language-bash">opam install . --deps-only
+<pre><code class="language-text">opam install . --deps-only
 </code></pre>
 <h3 id="add-new-packages">Add new packages</h3>
 <p>To add a new package to the opam switch, we can do:</p>
-<pre><code class="language-bash">opam install &lt;package_name&gt;
+<pre><code class="language-text">opam install &lt;package_name&gt;
 </code></pre>
 <p>But opam will not modify the <code>app.opam</code> file during the installation, this has
 to be done by hand, by adding the name of the package in the <code>depends</code> field.</p>
 <h3 id="linking-packages-for-development">Linking packages for development</h3>
 <p>This can be achieved with <code>opam pin</code>. For example, to pin a package to a
 specific commit on GitHub:</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#61bfbfaf8c971dec5152bce7e528d30552c70bc5
+<pre><code class="language-text">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#61bfbfaf8c971dec5152bce7e528d30552c70bc5
 </code></pre>
 <p>Branch names can also be used.</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#feature
+<pre><code class="language-text">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#feature
 </code></pre>
 <p>For packages that are already published in the opam repository, a shortcut to
 pin to the latest version is to use the <code>--dev-repo</code> flag, e.g.</p>
-<pre><code class="language-bash">opam pin add melange.dev --dev-repo
+<pre><code class="language-text">opam pin add melange.dev --dev-repo
 </code></pre>
 <p>To remove the pinning for any package, use <code>opam unpin &lt;package_name&gt;</code> or <code>opam
 pin remove &lt;package_name&gt;</code>.</p>
@@ -292,10 +292,10 @@ documentation</a>.</p>
 <p>There is one big difference compared to npm: opam stores a local copy of the
 opam repository, like <code>apt-get</code> does in Debian. So before doing any upgrades, we
 might want to update this copy before:</p>
-<pre><code class="language-bash">opam update
+<pre><code class="language-text">opam update
 </code></pre>
 <p>Then, to upgrade the installed packages to the latest version, run:</p>
-<pre><code class="language-bash">opam upgrade &lt;package_name&gt;
+<pre><code class="language-text">opam upgrade &lt;package_name&gt;
 </code></pre>
 <p><code>opam upgrade</code> is also able to upgrade <em>all</em> the packages of the local switch if
 no package name is given.</p>

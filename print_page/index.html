@@ -430,7 +430,7 @@ page</a> on installation. Most of the
 time, we can get it from your package manager. Otherwise, binaries are provided
 for every platform.</p>
 <p>There is a necessary first step before using opam:</p>
-<pre><code class="language-bash">opam init -a
+<pre><code class="language-text">opam init -a
 </code></pre>
 <p>Here is what the documentation of the <code>opam init</code> command says:</p>
 <blockquote>
@@ -465,7 +465,7 @@ or project.</p>
 init</code> or <code>yarn add</code> does not exist in opam, so the updates in <code>.opam</code> files have
 to be done by hand.</p>
 <p>A minimal <code>.opam</code> file looks like this:</p>
-<pre><code>opam-version: &quot;2.0&quot;
+<pre><code class="language-text">opam-version: &quot;2.0&quot;
 name: &quot;my-app&quot;
 authors: &quot;Louis&quot;
 homepage: &quot;https://github.com/khady/example&quot;
@@ -488,28 +488,28 @@ switch exists already, we can look for a <code>_opam</code> directory at the roo
 project or use the <code>opam switch</code> command to identify if a switch already exists
 in the project folder.</p>
 <p>If it does not exist, we can create it with:</p>
-<pre><code class="language-bash">opam switch create . 4.14.1 --deps-only
+<pre><code class="language-text">opam switch create . 4.14.1 --deps-only
 </code></pre>
 <p>If it exists, we can install the dependencies of the project with:</p>
-<pre><code class="language-bash">opam install . --deps-only
+<pre><code class="language-text">opam install . --deps-only
 </code></pre>
 <h3 id="package-management-add-new-packages">Add new packages</h3>
 <p>To add a new package to the opam switch, we can do:</p>
-<pre><code class="language-bash">opam install &lt;package_name&gt;
+<pre><code class="language-text">opam install &lt;package_name&gt;
 </code></pre>
 <p>But opam will not modify the <code>app.opam</code> file during the installation, this has
 to be done by hand, by adding the name of the package in the <code>depends</code> field.</p>
 <h3 id="package-management-linking-packages-for-development">Linking packages for development</h3>
 <p>This can be achieved with <code>opam pin</code>. For example, to pin a package to a
 specific commit on GitHub:</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#61bfbfaf8c971dec5152bce7e528d30552c70bc5
+<pre><code class="language-text">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#61bfbfaf8c971dec5152bce7e528d30552c70bc5
 </code></pre>
 <p>Branch names can also be used.</p>
-<pre><code class="language-bash">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#feature
+<pre><code class="language-text">opam pin add reason-react.dev https://github.com/reasonml/reason-react.git#feature
 </code></pre>
 <p>For packages that are already published in the opam repository, a shortcut to
 pin to the latest version is to use the <code>--dev-repo</code> flag, e.g.</p>
-<pre><code class="language-bash">opam pin add melange.dev --dev-repo
+<pre><code class="language-text">opam pin add melange.dev --dev-repo
 </code></pre>
 <p>To remove the pinning for any package, use <code>opam unpin &lt;package_name&gt;</code> or <code>opam
 pin remove &lt;package_name&gt;</code>.</p>
@@ -519,10 +519,10 @@ documentation</a>.</p>
 <p>There is one big difference compared to npm: opam stores a local copy of the
 opam repository, like <code>apt-get</code> does in Debian. So before doing any upgrades, we
 might want to update this copy before:</p>
-<pre><code class="language-bash">opam update
+<pre><code class="language-text">opam update
 </code></pre>
 <p>Then, to upgrade the installed packages to the latest version, run:</p>
-<pre><code class="language-bash">opam upgrade &lt;package_name&gt;
+<pre><code class="language-text">opam upgrade &lt;package_name&gt;
 </code></pre>
 <p><code>opam upgrade</code> is also able to upgrade <em>all</em> the packages of the local switch if
 no package name is given.</p>
@@ -616,7 +616,7 @@ section</a>:</p>
 </code></pre>
 <p>Create a file named <code>dune-project</code>. This file will tell Dune a few things about
 our project configuration:</p>
-<pre><code class="language-bash">(lang dune 3.8)
+<pre><code class="language-text">(lang dune 3.8)
 
 (using melange 0.1)
 </code></pre>
@@ -629,7 +629,7 @@ language</a>.</p>
 <h4 id="build-system-adding-a-library">Adding a library</h4>
 <p>Next, create a folder <code>lib</code>, and a <code>dune</code> file inside. Put the following content
 inside the <code>dune</code> file:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange))
 </code></pre>
@@ -652,7 +652,7 @@ quite convenient.</p>
 application</strong>, but they won’t produce any JavaScript artifacts on their own.</p>
 <p>To generate JavaScript code, we need to define an entry point of our
 application. In the root folder, create another <code>dune</code> file:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (libraries lib))
 </code></pre>
@@ -663,7 +663,7 @@ application. In the root folder, create another <code>dune</code> file:</p>
 libraries and modules. In-depth documentation about this stanza can be found in
 the <a href="https://dune.readthedocs.io/en/latest/melange.html">Dune docs</a>.</p>
 <p>The file structure of the app should look something like this:</p>
-<pre><code class="language-bash">project_name/
+<pre><code class="language-text">project_name/
 ├── _opam
 ├── lib
 │   ├── dune
@@ -697,7 +697,7 @@ folder, but we don’t have any such folder in our sources. This folder is the o
 declared in the <code>target</code> field of the <code>melange.emit</code> stanza, which Dune will use
 to know where to place the generated JavaScript artifacts.</p>
 <p>As a more complex example, consider the following setup:</p>
-<pre><code class="language-bash">project_name/
+<pre><code class="language-text">project_name/
 ├── dune-project
 ├── lib
 │   ├── dune
@@ -706,12 +706,12 @@ to know where to place the generated JavaScript artifacts.</p>
     └── dune
 </code></pre>
 <p>With <code>emit/dune</code> being:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (libraries lib))
 </code></pre>
 <p>And <code>lib/dune</code>:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange))
 </code></pre>
@@ -752,7 +752,7 @@ projects, but larger projects might define multiple entry points or
 individual stanzas. To do so, one can define explicit aliases for each one of
 them by using the <code>alias</code> field.</p>
 <p>Let’s define a custom alias <code>my-app</code> for our <code>melange.emit</code> stanza:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (alias my-app)
  (libraries lib))
@@ -762,7 +762,7 @@ them by using the <code>alias</code> field.</p>
 </code></pre>
 <p>Note that if we try to build again using the default <code>melange</code> alias, Dune will
 return an error, as there are no more targets attached to it.</p>
-<pre><code class="language-bash">$ dune build @melange
+<pre><code class="language-text">$ dune build @melange
 Error: Alias &quot;melange&quot; specified on the command line is empty.
 It is not defined in . or any of its descendants.
 </code></pre>
@@ -792,7 +792,7 @@ field</a>
 that will allow to use the <code>bs.raw</code> extension (more about these extensions in
 the <a href="#communicate-with-javascript">"Communicate with JavaScript"</a> section), in
 order to get the value of the <code>__dirname</code> environment variable:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange)
  (melange.runtime_deps name.txt)
@@ -814,7 +814,7 @@ asset in your project.</p>
 <p>Dune offers great flexibility to specify dependencies. Another interesting
 feature are globs, that allow to simplify the configuration when depending on
 multiple files. For example:</p>
-<pre><code class="language-bash">(melange.runtime_deps
+<pre><code class="language-text">(melange.runtime_deps
  (glob_files styles/*.css)
  (glob_files images/*.png)
  (glob_files static/*.{pdf,txt}))
@@ -876,8 +876,12 @@ to and from JavaScript.</p>
 <td>boolean</td>
 </tr>
 <tr>
-<td>Js.Nullable.t</td>
+<td><a href="#communicate-with-javascript-todo-fix-me.md">Js.Nullable.t</a></td>
 <td><code>null</code> / <code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#communicate-with-javascript-todo-fix-me.md">Js.Re.t</a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp"><code>RegExp</code></a></td>
 </tr>
 <tr>
 <td>Option.t <code>None</code></td>
@@ -1040,6 +1044,18 @@ non-shared data types (like variants), these values should be transformed
 separately, and not be directly used in JavaScript.</p>
 <p>Extensive documentation about interfacing with JavaScript objects using records
 can be found in <a href="#communicate-with-javascript-bind-to-js-object">the section below</a>.</p>
+<h3 id="communicate-with-javascript-regular-expressions">Regular expressions</h3>
+<p>Regular expressions created using the <code>%bs.re</code> extension node compile to their
+JavaScript counterpart.</p>
+<p>For example:</p>
+<pre><code class="language-ocaml">let r = [%bs.re &quot;/b/g&quot;]
+</code></pre>
+<p>Will compile to:</p>
+<pre><code class="language-js">var r = /b/g;
+</code></pre>
+<p>A regular expression like the above is of type <code>Js.Re.t</code>. The
+<a href="#communicate-with-javascript-todo-fix-me.md"><code>Js.Re</code></a> module provides the bindings to the JavaScript
+functions that operate over regular expressions.</p>
 <h2 id="communicate-with-javascript-non-shared-data-types">Non-shared data types</h2>
 <p>The following types differ too much between Melange and JavaScript, so while
 they can always be manipulated from JavaScript, it is recommended to transform
@@ -1180,7 +1196,7 @@ and more:</p>
 <p><strong>Extensions:</strong></p>
 <p>In order to use any of these extensions, you will have to add the melange PPX
 preprocessor to your project. To do so, add the following to the <code>dune</code> file:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange)
  (preprocess
@@ -1189,11 +1205,11 @@ preprocessor to your project. To do so, add the following to the <code>dune</cod
 <p>The same field <code>preprocess</code> can be added to <code>melange.emit</code>.</p>
 <p>Here is the list of all extensions supported by Melange:</p>
 <ul>
-<li><code>bs.debugger</code>: insert <code>debugger</code> statements</li>
-<li><code>bs.external</code>: read global values</li>
+<li><a href="#communicate-with-javascript-debugger"><code>bs.debugger</code></a>: insert <code>debugger</code> statements</li>
+<li><a href="#communicate-with-javascript-detect-global-variables"><code>bs.external</code></a>: read global values</li>
 <li><a href="#communicate-with-javascript-using-jst-objects"><code>bs.obj</code></a>: create JavaScript object literals</li>
-<li><code>bs.raw</code>: write raw JavaScript code</li>
-<li><code>bs.re</code>: insert regular expressions</li>
+<li><a href="#communicate-with-javascript-generate-raw-javascript"><code>bs.raw</code></a>: write raw JavaScript code</li>
+<li><a href="#communicate-with-javascript-regular-expressions"><code>bs.re</code></a>: insert regular expressions</li>
 </ul>
 <h2 id="communicate-with-javascript-foreign-function-interface">Foreign function interface</h2>
 <p>Most of the system that Melange exposes to communicate with JavaScript is built
@@ -2094,7 +2110,7 @@ except the former’s arity is guaranteed to be N while the latter is unknown.</
 let _ = map [||] [||] add
 </code></pre>
 <p>We will get an error:</p>
-<pre><code class="language-bash">let _ = map [||] [||] add
+<pre><code class="language-text">let _ = map [||] [||] add
                       ^^^
 This expression has type int -&gt; int -&gt; int
 but an expression was expected of type ('a -&gt; 'b -&gt; 'c) Js.Fn.arity2

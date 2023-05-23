@@ -198,7 +198,7 @@ section</a>:</p>
 </code></pre>
 <p>Create a file named <code>dune-project</code>. This file will tell Dune a few things about
 our project configuration:</p>
-<pre><code class="language-bash">(lang dune 3.8)
+<pre><code class="language-text">(lang dune 3.8)
 
 (using melange 0.1)
 </code></pre>
@@ -211,7 +211,7 @@ language</a>.</p>
 <h4 id="adding-a-library">Adding a library</h4>
 <p>Next, create a folder <code>lib</code>, and a <code>dune</code> file inside. Put the following content
 inside the <code>dune</code> file:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange))
 </code></pre>
@@ -234,7 +234,7 @@ quite convenient.</p>
 application</strong>, but they won’t produce any JavaScript artifacts on their own.</p>
 <p>To generate JavaScript code, we need to define an entry point of our
 application. In the root folder, create another <code>dune</code> file:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (libraries lib))
 </code></pre>
@@ -245,7 +245,7 @@ application. In the root folder, create another <code>dune</code> file:</p>
 libraries and modules. In-depth documentation about this stanza can be found in
 the <a href="https://dune.readthedocs.io/en/latest/melange.html">Dune docs</a>.</p>
 <p>The file structure of the app should look something like this:</p>
-<pre><code class="language-bash">project_name/
+<pre><code class="language-text">project_name/
 ├── _opam
 ├── lib
 │   ├── dune
@@ -279,7 +279,7 @@ folder, but we don’t have any such folder in our sources. This folder is the o
 declared in the <code>target</code> field of the <code>melange.emit</code> stanza, which Dune will use
 to know where to place the generated JavaScript artifacts.</p>
 <p>As a more complex example, consider the following setup:</p>
-<pre><code class="language-bash">project_name/
+<pre><code class="language-text">project_name/
 ├── dune-project
 ├── lib
 │   ├── dune
@@ -288,12 +288,12 @@ to know where to place the generated JavaScript artifacts.</p>
     └── dune
 </code></pre>
 <p>With <code>emit/dune</code> being:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (libraries lib))
 </code></pre>
 <p>And <code>lib/dune</code>:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange))
 </code></pre>
@@ -334,7 +334,7 @@ projects, but larger projects might define multiple entry points or
 individual stanzas. To do so, one can define explicit aliases for each one of
 them by using the <code>alias</code> field.</p>
 <p>Let’s define a custom alias <code>my-app</code> for our <code>melange.emit</code> stanza:</p>
-<pre><code class="language-bash">(melange.emit
+<pre><code class="language-text">(melange.emit
  (target app)
  (alias my-app)
  (libraries lib))
@@ -344,7 +344,7 @@ them by using the <code>alias</code> field.</p>
 </code></pre>
 <p>Note that if we try to build again using the default <code>melange</code> alias, Dune will
 return an error, as there are no more targets attached to it.</p>
-<pre><code class="language-bash">$ dune build @melange
+<pre><code class="language-text">$ dune build @melange
 Error: Alias &quot;melange&quot; specified on the command line is empty.
 It is not defined in . or any of its descendants.
 </code></pre>
@@ -374,7 +374,7 @@ field</a>
 that will allow to use the <code>bs.raw</code> extension (more about these extensions in
 the <a href="../communicate-with-javascript/">"Communicate with JavaScript"</a> section), in
 order to get the value of the <code>__dirname</code> environment variable:</p>
-<pre><code class="language-bash">(library
+<pre><code class="language-text">(library
  (name lib)
  (modes melange)
  (melange.runtime_deps name.txt)
@@ -396,7 +396,7 @@ asset in your project.</p>
 <p>Dune offers great flexibility to specify dependencies. Another interesting
 feature are globs, that allow to simplify the configuration when depending on
 multiple files. For example:</p>
-<pre><code class="language-bash">(melange.runtime_deps
+<pre><code class="language-text">(melange.runtime_deps
  (glob_files styles/*.css)
  (glob_files images/*.png)
  (glob_files static/*.{pdf,txt}))
