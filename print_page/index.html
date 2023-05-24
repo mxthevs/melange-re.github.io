@@ -77,6 +77,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../communicate-with-javascript/">Communicate with JavaScript</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../melange-for-x-developers/">Melange for X developers</a>
+                  </li>
               </ul>
               <p class="caption"><span class="caption-text">Reference</span></p>
               <ul>
@@ -289,8 +291,8 @@ for OCaml projects.</p>
 <p>This fork of BuckleScript is later named Melange. After finishing the switch
 from Ninja to Dune, several additional features are added to bring it closer to
 OCaml. Some examples are the upgrade of the OCaml compiler version used by
-Melange, or modeling the changes to the OCaml compiler that Melange uses as
-just a plain library, instead of a full fork of the upstream compiler.</p>
+Melange, or modeling the changes to the OCaml compiler that Melange uses as just
+a plain library, instead of a full fork of the upstream compiler.</p>
 <p>In September 2022, Ahrefs decides to invest on Melange by funding a project to
 deepen the integration between Dune and Melange. This project achieves its
 completion in Spring 2023, with the <a href="https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4">migration of Ahrefs frontend codebase to
@@ -342,11 +344,84 @@ documentation site.</p>
 though it can compile melange projects on other OCaml switches.</p>
 </blockquote>
 <h2 id="getting-started-alternative-package-managers-experimental">Alternative package managers (experimental)</h2>
-<p>Although the recommended setup for Melange projects is with opam, Melange can
-also be used with other package managers, such as <a href="https://esy.sh/">esy</a> and
-<a href="https://github.com/NixOS/nix">Nix</a>. There is also a <a href="https://github.com/melange-re/melange-esy-template">Melange project template
-for esy</a> available, similar
-in spirit to the Melange opam template mentioned above.</p></section>
+<p>Melange can also be used with other package managers. The following instructions
+apply to <a href="#getting-started-nix">Nix</a> and <a href="#getting-started-esy">esy</a>.</p>
+<h3 id="getting-started-nix"><a href="https://nixos.org/">Nix</a></h3>
+<p>Melange provides an overlay that can be:</p>
+<ul>
+<li>referenced from a <a href="https://nixos.wiki/wiki/Flakes">Nix flake</a></li>
+<li>overlayed onto a <code>nixpkgs</code> package set</li>
+</ul>
+<p>Make sure <a href="https://nixos.org/download.html">Nix</a> is installed. The following
+<code>flake.nix</code> illustrates how to set up a Melange development environment.</p>
+<pre><code class="language-nix">{
+  description = &quot;Melange starter&quot;;
+
+  inputs = {
+    flake-utils.url = &quot;github:numtide/flake-utils&quot;;
+    nixpkgs.url = &quot;github:nixos/nixpkgs&quot;;
+
+    # Depend on the Melange flake, which provides the overlay
+    melange.url = &quot;github:melange-re/melange&quot;;
+  };
+
+  outputs = { self, nixpkgs, flake-utils, melange }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system}.appendOverlays [
+          # Set the OCaml set of packages to the 4.14 release line
+          (self: super: { ocamlPackages = super.ocaml-ng.ocamlPackages_4_14; })
+          # Apply the Melange overlay
+          melange.overlays.default
+        ];
+        inherit (pkgs) ocamlPackages;
+      in
+
+      {
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = with ocamlPackages; [
+            ocaml
+            dune_3
+            findlib
+            ocaml-lsp
+            ocamlPackages.melange
+          ];
+          buildInputs = [ ocamlPackages.melange ];
+        };
+      });
+}
+</code></pre>
+<p>To enter a Melange development shell, run <code>nix develop -c $SHELL</code>.</p>
+<h3 id="getting-started-esy"><a href="https://esy.sh/">esy</a></h3>
+<p>First, make sure <code>esy</code> is
+<a href="https://esy.sh/docs/en/getting-started.html#install-esy">installed</a>. <code>npm i -g
+esy</code> does the trick in most setups.</p>
+<p>The following is an example <code>esy.json</code> that can help start a Melange project. A
+<a href="https://github.com/melange-re/melange-esy-template">project template for esy</a>
+is also available if you prefer to <a href="https://github.com/melange-re/melange-esy-template/generate">start from a
+template</a>.</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;melange-project&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ocaml&quot;: &quot;4.14.x&quot;,
+    &quot;@opam/dune&quot;: &quot;&gt;= 3.8.0&quot;,
+    &quot;@opam/melange&quot;: &quot;*&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;@opam/ocaml-lsp-server&quot;: &quot;*&quot;
+  },
+  &quot;esy&quot;: {
+    &quot;build&quot;: [
+      &quot;dune build @melange&quot;
+    ]
+  }
+}
+</code></pre>
+<p>Run:</p>
+<ol>
+<li><code>esy install</code> to build and make all dependencies available</li>
+<li><code>esy shell</code> to enter a Melange development environment</li>
+</ol></section>
                         <h1 class='nav-section-title' id='section-learn'>
                             Learn <a class='headerlink' href='#section-learn' title='Permanent link'>↵</a>
                         </h1>
@@ -829,10 +904,274 @@ the <a href="https://github.com/melange-re/melange-opam-template">Melange opam
 template</a>.</p></section><section class="print-page" id="communicate-with-javascript"><h1 id="communicate-with-javascript-communicate-with-javascript">Communicate with JavaScript</h1>
 <p>Melange interoperates very well with JavaScript, and provides a wide array of
 features to consume foreign JavaScript code. To learn about these techniques, we
-will first map the OCaml type system to JavaScript runtime types, then we will
-see the OCaml language extensions that allow these techniques to exist. Finally,
-we will provide a variety of use cases with examples to show how to communicate
-to and from JavaScript.</p>
+will first go through the language concepts that they build upon, then we will
+see how types in Melange map to JavaScript runtime types. Finally, we will
+provide a variety of use cases with examples to show how to communicate to and
+from JavaScript.</p>
+<h2 id="communicate-with-javascript-language-concepts">Language concepts</h2>
+<p>The concepts covered in the following sections are a small subset of the OCaml
+language. However, they are essential for understanding how to communicate with
+JavaScript, and the features that Melange exposes to do so.</p>
+<h3 id="communicate-with-javascript-attributes-and-extension-nodes">Attributes and extension nodes</h3>
+<p>In order to interact with JavaScript, Melange needs to extend the language to
+provide blocks that express these interactions.</p>
+<p>One approach could be to introduce new syntactic constructs (keywords and such)
+to do so, for example:</p>
+<pre><code class="language-ocaml">javascript add : int -&gt; int -&gt; int = {|function(x,y){
+  return x + y
+}|}
+</code></pre>
+<p>But this would break compatibility with OCaml, which is one of the main goals of
+Melange.</p>
+<p>Fortunately, OCaml provides mechanisms to extend its language without breaking
+compatibility with the parser or the language. These mechanisms are composed by
+two parts:
+- First, some syntax additions to define parts of the code that will be extended
+  or replaced
+- Second, compile-time OCaml native programs called <a href="https://ocaml.org/docs/metaprogramming">PPX
+  rewriters</a>, that will read the syntax
+  additions defined above and proceed to extend or replace them</p>
+<p>The syntax additions come in two flavors, called <a href="https://v2.ocaml.org/manual/extensionnodes.html">extension
+nodes</a> and
+<a href="https://v2.ocaml.org/manual/attributes.html">attributes</a>.</p>
+<h4 id="communicate-with-javascript-extension-nodes">Extension nodes</h4>
+<p>Extension nodes are blocks that are supposed to be replaced by a specific type
+of PPX rewriters called extenders. Extension nodes use the <code>%</code> character to be
+identified. Extenders will take the extension node and replace it with a valid
+OCaml AST (abstract syntax tree).</p>
+<p>An example where Melange uses extension nodes to communicate with JavaScript is
+to produce "raw" JavaScript inside a Melange program:</p>
+<pre><code class="language-ocaml">[%%bs.raw &quot;var a = 1; var b = 2&quot;]
+let add = [%bs.raw &quot;a + b&quot;]
+</code></pre>
+<p>Which will generate the following JavaScript code:</p>
+<pre><code class="language-js">var a = 1; var b = 2
+var add = a + b
+</code></pre>
+<p>The difference between one and two percentage characters is detailed in the
+<a href="https://v2.ocaml.org/manual/extensionnodes.html">OCaml documentation</a>.</p>
+<h4 id="communicate-with-javascript-attributes">Attributes</h4>
+<p>Attributes are "decorations" applied to specific parts of the code to provide
+additional information. In Melange, attributes are used in two ways to enhance
+the expressiveness of generating JavaScript code: either reusing existing OCaml
+built-in attributes or defining new ones.</p>
+<h5 id="communicate-with-javascript-reusing-ocaml-attributes">Reusing OCaml attributes</h5>
+<p>The first approach is leveraging the existing <a href="https://v2.ocaml.org/manual/attributes.html#ss:builtin-attributes">OCaml’s built-in
+attributes</a>
+to be used for JavaScript generation.</p>
+<p>One prominent example of OCaml attributes that can be used in Melange projects
+is the <code>unboxed</code> attribute, which optimizes the compilation of single-field
+records and variants with a single tag to their raw values. This is useful when
+defining type aliases that we don’t want to mix up, or when binding to
+JavaScript code that uses heterogeneous collections. An example of the latter is
+discussed in the <a href="#communicate-with-javascript-variadic-function-arguments">variadic function arguments</a>
+section.</p>
+<p>For instance:</p>
+<pre><code class="language-ocaml">type name =
+  | Name of string [@@unboxed]
+let student_name = Name &quot;alice&quot;
+</code></pre>
+<p>Compiles into:</p>
+<pre><code class="language-js">var student_name = &quot;alice&quot;;
+</code></pre>
+<p>Other OCaml pre-built attributes like <code>alert</code> or <code>deprecated</code> can be used with
+Melange as well.</p>
+<h5 id="communicate-with-javascript-defining-new-attributes">Defining new attributes</h5>
+<p>The second approach is introducing new attributes specifically designed for
+Melange, such as the <a href="#communicate-with-javascript-bind-to-global-javascript-functions-or-values"><code>bs.val</code>
+attribute</a> used to bind to
+global JavaScript values. The complete list of attributes introduced by Melange
+can be found <a href="#communicate-with-javascript-list-of-attributes-and-extension-nodes">here</a>.</p>
+<p>Attribute annotations can use one, two or three <code>@</code> characters depending on
+their placement in the code and which kind of syntax tree node they are
+annotating. More information about attributes can be found in the <a href="https://v2.ocaml.org/manual/attributes.html">dedicated
+OCaml manual page</a>.</p>
+<p>Here are some samples using Melange attributes
+<a href="#communicate-with-javascript-bind-to-global-javascript-functions-or-values"><code>bs.val</code></a> and
+<a href="#communicate-with-javascript-using-ocaml-records"><code>bs.as</code></a>:</p>
+<pre><code class="language-ocaml">external clearTimeout : timeoutId -&gt; unit = &quot;clearTimeout&quot; [@@bs.val]
+
+type t = {
+  age : int; [@bs.as &quot;a&quot;]
+  name : string; [@bs.as &quot;n&quot;]
+}
+</code></pre>
+<p>To learn more about preprocessors, attributes and extension nodes, check the
+<a href="https://ocaml.org/docs/metaprogramming#ppx-rewriters">section about PPX
+rewriters</a> in the OCaml
+docs.</p>
+<h3 id="communicate-with-javascript-external-functions">External functions</h3>
+<p>Most of the system that Melange exposes to communicate with JavaScript is built
+on top of an OCaml language construct called <code>external</code>.</p>
+<p><code>external</code> is a keyword for declaring a value in OCaml that will <a href="https://v2.ocaml.org/manual/intfc.html">interface with
+C code</a>:</p>
+<pre><code class="language-ocaml">external my_c_function : int -&gt; string = &quot;someCFunctionName&quot;
+</code></pre>
+<p>It is like a <code>let</code> binding, except that the body of an external is a string.
+That string has a specific meaning depending on the context. For native OCaml,
+it usually refers to a C function with that name. For Melange, it refers to the
+functions or values that exist in the runtime JavaScript code, and will be used
+from Melange.</p>
+<p>Melange externals are always decorated with certain <code>[@bs.xxx]</code> attributes. Each
+one of the <a href="#communicate-with-javascript-list-of-attributes-and-extension-nodes">available attributes</a> will
+be further explained in the next sections.</p>
+<p>Once declared, one can use an <code>external</code> as a normal value. Melange external
+functions are turned into the expected JavaScript values, inlined into their
+callers during compilation, and completely erased afterwards. They don’t appear
+in the JavaScript output, so there are no costs on bundling size.</p>
+<p><strong>Note</strong>: it is recommended to use external functions and the <code>[@bs.xxx]</code>
+attributes in the interface files as well, as this allows some optimizations
+where the resulting JavaScript values can be directly inlined at the call sites.</p>
+<h4 id="communicate-with-javascript-special-identity-external">Special identity external</h4>
+<p>One external worth mentioning is the following one:</p>
+<pre><code class="language-ocaml">type foo = string
+type bar = int
+external danger_zone : foo -&gt; bar = &quot;%identity&quot;
+</code></pre>
+<p>This is a final escape hatch which does nothing but convert from the type <code>foo</code>
+to <code>bar</code>. In the following sections, if you ever fail to write an <code>external</code>,
+you can fall back to using this one. But try not to.</p>
+<h3 id="communicate-with-javascript-abstract-types">Abstract types</h3>
+<p>In the subsequent sections, you will come across examples of bindings where a
+type is defined without being assigned to a value. Here is an example:</p>
+<pre><code class="language-ocaml">type document
+</code></pre>
+<p>These types are referred to as "abstract types" and are commonly used together
+with external functions that define operations over values when communicating
+with JavaScript.</p>
+<p>Abstract types enable defining types for specific values originating from
+JavaScript while omitting unnecessary details. An illustration is the <code>document</code>
+type mentioned earlier, which has several
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">properties</a>. By
+using abstract types, one can focus solely on the required aspects of the
+<code>document</code> value that the Melange program requires, rather than defining all its
+properties. Consider the following example:</p>
+<pre><code class="language-ocaml">type document
+
+external document : document = &quot;document&quot; [@@bs.val]
+external set_title : document -&gt; string -&gt; unit = &quot;title&quot; [@@bs.set]
+</code></pre>
+<p>Subsequent sections delve into the details of the
+<a href="#communicate-with-javascript-bind-to-global-javascript-functions-or-values"><code>bs.val</code></a> and
+<a href="#communicate-with-javascript-bind-to-object-properties"><code>bs.set</code></a> attributes.</p>
+<p>For a comprehensive understanding of abstract types and their usefulness, refer
+to the "Encapsulation" section of the <a href="https://cs3110.github.io/textbook/chapters/modules/encapsulation.html">OCaml Cornell
+textbook</a>.</p>
+<h3 id="communicate-with-javascript-pipe-operators">Pipe operators</h3>
+<p>There are two pipe operators available in Melange:</p>
+<ul>
+<li>
+<p>A <em>pipe last</em> operator <code>|&gt;</code>, available <a href="https://v2.ocaml.org/api/Stdlib.html#1_Compositionoperators">in
+  OCaml</a> and
+  inherited in Melange</p>
+</li>
+<li>
+<p>A <em>pipe first</em> operator <code>|.</code>, available exclusively in Melange</p>
+</li>
+</ul>
+<p>Let’s see the differences between the two.</p>
+<h4 id="communicate-with-javascript-pipe-last">Pipe last</h4>
+<p>Since version 4.01, OCaml includes a reverse application or "pipe" (<code>|&gt;</code>)
+operator, an infix operator that applies the result from the previous expression
+the next function. As a backend for OCaml, Melange inherits this operator.</p>
+<p>The pipe operator could be implemented like this (the real implementation is a
+bit
+<a href="https://github.com/ocaml/ocaml/blob/d9547617e8b14119beacafaa2546cbebfac1bfe5/stdlib/stdlib.ml#L48">different</a>):</p>
+<pre><code class="language-ocaml">let ( |&gt; ) f g = g f
+</code></pre>
+<p>This operator is useful when multiple functions are applied to some value in
+sequence, with the output of each function becoming the input of the next (a
+<em>pipeline</em>).</p>
+<p>For example, assuming we have a function <code>square</code> defined as:</p>
+<pre><code class="language-ocaml">let square x = x * x
+</code></pre>
+<p>We are using it like:</p>
+<pre><code class="language-ocaml">let ten = succ (square 3)
+</code></pre>
+<p>The pipe operator allows to write the computation for <code>ten</code> in left-to-right
+order, as <a href="https://v2.ocaml.org/manual/expr.html#ss:precedence-and-associativity">it has left
+associativity</a>:</p>
+<pre><code class="language-ocaml">let ten = 3 |&gt; square |&gt; succ
+</code></pre>
+<p>When working with functions that can take multiple arguments, the pipe operator
+works best when the functions take the data we are processing as the last
+argument. For example:</p>
+<pre><code class="language-ocaml">let sum = List.fold_left ( + ) 0
+
+let sum_sq =
+  [ 1; 2; 3 ]
+  |&gt; List.map square (* [1; 4; 9] *)
+  |&gt; sum             (* 1 + 4 + 9 *)
+</code></pre>
+<p>The above example can be written concisely because the <code>List.map</code> function in
+the <a href="https://v2.ocaml.org/api/Stdlib.List.html">OCaml standard library</a> takes
+the list as the second argument. This convention is sometimes referred to as
+"data-last", and is widely adopted in the OCaml ecosystem. Data-last and the
+pipe operator <code>|&gt;</code> work great with currying, so they are a great fit for the
+language.</p>
+<p>However, there are some limitations when using data-last when it comes to error
+handling. In the given example, if we mistakenly used the wrong function:</p>
+<pre><code class="language-ocaml">let sum_sq =
+  [ 1; 2; 3 ]
+  |&gt; List.map String.cat
+  |&gt; sum
+</code></pre>
+<p>The compiler would rightfully raise an error:</p>
+<pre><code class="language-text">4 |   [ 1; 2; 3 ]
+        ^
+Error: This expression has type int but an expression was expected of type
+         string
+</code></pre>
+<p>Note that instead of telling us that we are passing the wrong function in
+<code>List.map</code> (<code>String.cat</code>), the error points to the list itself. This behavior
+aligns with the way type inference works, as the compiler infers types from left
+to right. Since <code>[ 1; 2; 3 ] |&gt; List.map String.cat</code> is equivalent to <code>List.map
+String.cat [ 1; 2; 3 ]</code>, the type mismatch is detected when the list is type
+checked, after <code>String.cat</code> has been processed.</p>
+<p>With the goal of addressing this kind of limitations, Melange introduces the
+pipe first operator <code>|.</code>.</p>
+<h4 id="communicate-with-javascript-pipe-first">Pipe first</h4>
+<p>To overcome the constraints mentioned above and enable the generation of more
+performant JavaScript code, Melange introduces the pipe first operator <code>|.</code>.</p>
+<p>Unlike the pipe last operator, the pipe first operator is not defined as an
+infix operator. Instead, it is a purely syntactic transformation. This means
+that the parser will convert <code>f |. g</code> into <code>g f</code> without any runtime performance
+impact.</p>
+<p>As its name suggests, the pipe first operator is better suited for functions
+where the data is passed as the first argument.</p>
+<p>The functions in the <a href="#communicate-with-javascript-todo-fix-me.md"><code>Belt</code> library</a> included with Melange have
+been designed with the data-first convention in mind, so they work best with the
+pipe first operator.</p>
+<p>For example, we can rewrite the example above using <code>Belt.List.map</code> and the pipe
+first operator:</p>
+<pre><code class="language-ocaml">let sum_sq =
+  [ 1; 2; 3 ]
+  |. Belt.List.map square
+  |. sum
+</code></pre>
+<p>We can see the difference on the error we get if the wrong function is passed to
+<code>Belt.List.map</code>:</p>
+<pre><code class="language-ocaml">let sum_sq =
+  [ 1; 2; 3 ]
+  |. Belt.List.map String.cat
+  |. sum
+</code></pre>
+<p>The compiler will show this error message:</p>
+<pre><code class="language-text">4 |   |. Belt.List.map String.cat
+                       ^^^^^^^^^^
+Error: This expression has type string -&gt; string -&gt; string
+       but an expression was expected of type int -&gt; 'a
+       Type string is not compatible with type int
+</code></pre>
+<p>The error points now to the function passed to <code>Belt.List.map</code>, which is more
+natural with the way the code is being written.</p>
+<p>Melange supports writing bindings to JavaScript using any of the two
+conventions, data-first or data-last, as shown in the <a href="#communicate-with-javascript-chaining">"Chaining"
+section</a>.</p>
+<p>For further details about the differences between the two operators, the
+data-first and data-last conventions and the trade-offs between them, one can
+refer to <a href="https://www.javierchavarri.com/data-first-and-data-last-a-comparison/">this related blog
+post</a>.</p>
 <h2 id="communicate-with-javascript-data-types-and-runtime-representation">Data types and runtime representation</h2>
 <p>This is how each Melange type is converted into JavaScript values:</p>
 <table>
@@ -957,10 +1296,10 @@ reading or writing them manually from JavaScript code that communicates with
 Melange code might lead to runtime errors, as these representations might change
 in the future.</p>
 </blockquote>
-<h2 id="communicate-with-javascript-shared-types">Shared types</h2>
+<h3 id="communicate-with-javascript-shared-types">Shared types</h3>
 <p>The following are types that can be shared between Melange and JavaScript almost
 "as is". Specific caveats are mentioned on the sections where they apply.</p>
-<h3 id="communicate-with-javascript-strings">Strings</h3>
+<h4 id="communicate-with-javascript-strings">Strings</h4>
 <p>JavaScript strings are immutable sequences of UTF-16 encoded Unicode text. OCaml
 strings are immutable sequences of bytes and nowadays assumed to be UTF-8
 encoded text when interpreted as textual content. This is problematic when
@@ -987,7 +1326,7 @@ let helloWorld = {j|你好，$world|j}
 the <a href="#communicate-with-javascript-todo-fix-me.md"><code>Stdlib.String</code> module</a>. The bindings to the native
 JavaScript functions to work with strings are in the <a href="#communicate-with-javascript-todo-fix-me.md"><code>Js.String</code>
 module</a>.</p>
-<h3 id="communicate-with-javascript-floating-point-numbers">Floating-point numbers</h3>
+<h4 id="communicate-with-javascript-floating-point-numbers">Floating-point numbers</h4>
 <p>OCaml floats are <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64">IEEE
 754</a>
 with a 53-bit mantissa and exponents from -1022 to 1023. This happens to be the
@@ -997,7 +1336,7 @@ so values of these types can be used transparently between Melange code and
 JavaScript code. The Melange standard library provides a <a href="#communicate-with-javascript-todo-fix-me.md"><code>Stdlib.Float</code>
 module</a>. The bindings to the JavaScript APIs that manipulate
 float values can be found in the <a href="#communicate-with-javascript-todo-fix-me.md"><code>Js.Float</code></a> module.</p>
-<h3 id="communicate-with-javascript-integers">Integers</h3>
+<h4 id="communicate-with-javascript-integers">Integers</h4>
 <p>In Melange, integers are limited to 32 bits due to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#fixed-width_number_conversion">fixed-width
 conversion</a>
 of bitwise operations in JavaScript. While Melange integers compile to
@@ -1012,7 +1351,7 @@ For instance, floats are used in bindings like <code>Js.Date</code>.</p>
 <p>The Melange standard library provides a <a href="#communicate-with-javascript-todo-fix-me.md"><code>Stdlib.Int</code> module</a>.
 The bindings to work with JavaScript integers are in the
 <a href="#communicate-with-javascript-todo-fix-me.md"><code>Js.Int</code></a> module.</p>
-<h3 id="communicate-with-javascript-arrays">Arrays</h3>
+<h4 id="communicate-with-javascript-arrays">Arrays</h4>
 <p>Melange arrays compile to JavaScript arrays. But note that unlike JavaScript
 arrays, all the values in a Melange array need to have the same type.</p>
 <p>Another difference is that OCaml arrays are fixed-sized, but on Melange side
@@ -1021,7 +1360,7 @@ like <code>Js.Array.push</code>, available in the bindings to the JavaScript API
 <a href="#communicate-with-javascript-todo-fix-me.md"><code>Js.Array</code></a>.</p>
 <p>Melange standard library also has a module to work with arrays, available in
 <code>Stdlib.Array</code>(todo-fix-me.md) module.</p>
-<h3 id="communicate-with-javascript-tuples">Tuples</h3>
+<h4 id="communicate-with-javascript-tuples">Tuples</h4>
 <p>OCaml tuples are compiled to JavaScript arrays. This is convenient when writing
 bindings that will use a JavaScript array with heterogeneous values, but that
 happens to have a fixed length.</p>
@@ -1036,15 +1375,15 @@ JavaScript arrays by Melange.</p>
 <p>Will produce:</p>
 <pre><code class="language-javascript">React.useEffect(function () {}, [foo, bar]);
 </code></pre>
-<h3 id="communicate-with-javascript-booleans">Booleans</h3>
+<h4 id="communicate-with-javascript-booleans">Booleans</h4>
 <p>Values of type <code>bool</code> compile to JavaScript booleans.</p>
-<h3 id="communicate-with-javascript-records">Records</h3>
+<h4 id="communicate-with-javascript-records">Records</h4>
 <p>Melange records map directly to JavaScript objects. If the record fields include
 non-shared data types (like variants), these values should be transformed
 separately, and not be directly used in JavaScript.</p>
 <p>Extensive documentation about interfacing with JavaScript objects using records
 can be found in <a href="#communicate-with-javascript-bind-to-js-object">the section below</a>.</p>
-<h3 id="communicate-with-javascript-regular-expressions">Regular expressions</h3>
+<h4 id="communicate-with-javascript-regular-expressions">Regular expressions</h4>
 <p>Regular expressions created using the <code>%bs.re</code> extension node compile to their
 JavaScript counterpart.</p>
 <p>For example:</p>
@@ -1074,69 +1413,10 @@ them before doing so.</p>
 <li>Int64</li>
 <li>Lazy values</li>
 </ul>
-<h2 id="communicate-with-javascript-language-extensions">Language extensions</h2>
-<p>In order to interact with JavaScript, Melange needs to extend the language to
-provide blocks that express these interactions.</p>
-<p>One approach could be to introduce new syntactic constructs (keywords and such)
-to do so, for example:</p>
-<pre><code class="language-ocaml">javascript add : int -&gt; int -&gt; int = {|function(x,y){
-  return x + y
-}|}
-</code></pre>
-<p>But this would break compatibility with OCaml, which is one of the main goals of
-Melange.</p>
-<p>Fortunately, OCaml provides mechanisms to extend its language without breaking
-compatibility with the parser or the language. These mechanisms are composed by
-two parts:
-- First, some syntax additions to define parts of the code that will be extended
-  or replaced
-- Second, compile-time OCaml native programs called <a href="https://ocaml.org/docs/metaprogramming">PPX
-  rewriters</a>, that will read the syntax
-  additions defined above and proceed to extend or replace them</p>
-<p>The syntax additions come in two flavors, called <a href="https://v2.ocaml.org/manual/extensionnodes.html">extensions
-nodes</a> and
-<a href="https://v2.ocaml.org/manual/attributes.html">attributes</a>.</p>
-<p>Extension nodes are blocks that are supposed to be replaced by a specific type
-of PPX rewriters called extenders. Extension nodes use the <code>%</code> character to be
-identified. Extenders will take the extension node and replace it with a valid
-OCaml AST (abstract syntax tree).</p>
-<p>An example where Melange uses extensions to communicate with JavaScript is to
-produce "raw" JavaScript inside a Melange program:</p>
-<pre><code class="language-ocaml">[%%bs.raw &quot;var a = 1; var b = 2&quot;]
-let add = [%bs.raw &quot;a + b&quot;]
-</code></pre>
-<p>Which will generate the following JavaScript code:</p>
-<pre><code class="language-js">var a = 1; var b = 2
-var add = a + b
-</code></pre>
-<p>The difference between one and two <code>%</code> characters is detailed in the <a href="https://v2.ocaml.org/manual/extensionnodes.html">OCaml
-documentation</a>.</p>
-<p>Attributes are "decorations" applied to specific parts of the code to provide
-additional information. Melange uses attributes in various ways to enhance
-communication with JavaScript code. For instance, it introduces the <code>bs.as</code>
-attribute, which allows renaming of fields in a record on the generated
-JavaScript code:</p>
-<pre><code class="language-ocaml">type t = {
-  foo : int; [@bs.as &quot;foo_for_js&quot;]
-  bar : string;
-}
-
-let t = { foo = 2; bar = &quot;b&quot; }
-</code></pre>
-<p>This will generate the following JavaScript code:</p>
-<pre><code class="language-js">var t = {
-  foo_for_js: 2,
-  bar: &quot;b&quot;
-};
-</code></pre>
-<p>To learn more about preprocessors, attributes and extension nodes, check the
-<a href="https://ocaml.org/docs/metaprogramming#ppx-rewriters">section about PPX
-rewriters</a> in the OCaml
-docs.</p>
-<h2 id="communicate-with-javascript-list-of-attributes-and-extensions">List of attributes and extensions</h2>
+<h2 id="communicate-with-javascript-list-of-attributes-and-extension-nodes">List of attributes and extension nodes</h2>
 <blockquote>
-<p><strong><em>NOTE:</em></strong> All these attributes and extensions are prefixed with <code>bs.</code> for
-backwards compatibility. They will be updated to <code>mel.</code> in the future.</p>
+<p><strong><em>NOTE:</em></strong> All these attributes and extension nodes are prefixed with <code>bs.</code>
+for backwards compatibility. They will be updated to <code>mel.</code> in the future.</p>
 </blockquote>
 <p><strong>Attributes:</strong></p>
 <p>These attributes are used to annotate <code>external</code> definitions:</p>
@@ -1193,9 +1473,10 @@ and more:</p>
 <li><a href="#communicate-with-javascript-convert-records-into-abstract-types"><code>bs.optional</code></a>: omit fields in a record
   (combines with <code>bs.deriving</code>)</li>
 </ul>
-<p><strong>Extensions:</strong></p>
-<p>In order to use any of these extensions, you will have to add the melange PPX
-preprocessor to your project. To do so, add the following to the <code>dune</code> file:</p>
+<p><strong>Extension nodes:</strong></p>
+<p>In order to use any of these extension nodes, you will have to add the melange
+PPX preprocessor to your project. To do so, add the following to the <code>dune</code>
+file:</p>
 <pre><code class="language-text">(library
  (name lib)
  (modes melange)
@@ -1203,7 +1484,7 @@ preprocessor to your project. To do so, add the following to the <code>dune</cod
    (pps melange.ppx)))
 </code></pre>
 <p>The same field <code>preprocess</code> can be added to <code>melange.emit</code>.</p>
-<p>Here is the list of all extensions supported by Melange:</p>
+<p>Here is the list of all the extension nodes supported by Melange:</p>
 <ul>
 <li><a href="#communicate-with-javascript-debugger"><code>bs.debugger</code></a>: insert <code>debugger</code> statements</li>
 <li><a href="#communicate-with-javascript-detect-global-variables"><code>bs.external</code></a>: read global values</li>
@@ -1211,65 +1492,6 @@ preprocessor to your project. To do so, add the following to the <code>dune</cod
 <li><a href="#communicate-with-javascript-generate-raw-javascript"><code>bs.raw</code></a>: write raw JavaScript code</li>
 <li><a href="#communicate-with-javascript-regular-expressions"><code>bs.re</code></a>: insert regular expressions</li>
 </ul>
-<h2 id="communicate-with-javascript-foreign-function-interface">Foreign function interface</h2>
-<p>Most of the system that Melange exposes to communicate with JavaScript is built
-on top of an OCaml language construct called <code>external</code>.</p>
-<p><code>external</code> is a keyword for declaring a value in OCaml that will <a href="https://v2.ocaml.org/manual/intfc.html">interface with
-C code</a>:</p>
-<pre><code class="language-ocaml">external my_c_function : int -&gt; string = &quot;someCFunctionName&quot;
-</code></pre>
-<p>It is like a <code>let</code> binding, except that the body of an external is a string.
-That string has a specific meaning depending on the context. For native OCaml,
-it usually refers to a C function with that name. For Melange, it refers to the
-functions or values that exist in the runtime JavaScript code, and will be used
-from Melange.</p>
-<p>Melange externals are always decorated with certain <code>[@bs.xxx]</code> attributes.
-These attributes are listed <a href="#communicate-with-javascript-list-of-attributes-and-extensions">above</a>, and
-will be further explain in the next sections.</p>
-<p>Once declared, one can use an <code>external</code> as a normal value.</p>
-<p>Melange external functions are turned into the expected JavaScript values,
-inlined into their callers during compilation, and completely erased afterwards.
-They don’t appear in the JavaScript output, so there are no costs on bundling
-size.</p>
-<p><strong>Note</strong>: it is recommended to use external functions and the <code>[@bs.xxx]</code>
-attributes in the interface files as well, as this allows some optimizations
-where the resulting JavaScript values can be directly inlined at the call sites.</p>
-<h3 id="communicate-with-javascript-special-identity-external">Special identity external</h3>
-<p>One external worth mentioning is the following one:</p>
-<pre><code class="language-ocaml">type foo = string
-type bar = int
-external danger_zone : foo -&gt; bar = &quot;%identity&quot;
-</code></pre>
-<p>This is a final escape hatch which does nothing but convert from the type <code>foo</code>
-to <code>bar</code>. In the following sections, if you ever fail to write an <code>external</code>,
-you can fall back to using this one. But try not to.</p>
-<p>Let’s now see all the ways to use JavaScript from Melange.</p>
-<h3 id="communicate-with-javascript-abstract-types">Abstract types</h3>
-<p>In the examples below, you’ll encounter type definitions where a type is
-declared without being assigned to anything, such as:</p>
-<pre><code class="language-ocaml">type document
-</code></pre>
-<p>These types are referred to as "abstract types" and are commonly used together
-with external functions that define operations over values when communicating
-with JavaScript.</p>
-<p>Abstract types enable defining types for specific values originating from
-JavaScript while omitting unnecessary details. An illustration is the <code>document</code>
-type mentioned earlier, which has several
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">properties</a>. By
-using abstract types, one can focus solely on the required aspects of the
-<code>document</code> value that the Melange program requires, rather than defining all its
-properties. Consider the following example:</p>
-<pre><code class="language-ocaml">type document
-
-external document : document = &quot;document&quot; [@@bs.val]
-external set_title : document -&gt; string -&gt; unit = &quot;title&quot; [@@bs.set]
-</code></pre>
-<p>Subsequent sections delve into the details of the
-<a href="#communicate-with-javascript-bind-to-global-javascript-functions-or-values"><code>bs.val</code></a> and
-<a href="#communicate-with-javascript-bind-to-object-properties"><code>bs.set</code></a> attributes.</p>
-<p>For a comprehensive understanding of abstract types and their usefulness, refer
-to the "Encapsulation" section of the <a href="https://cs3110.github.io/textbook/chapters/modules/encapsulation.html">OCaml Cornell
-textbook</a>.</p>
 <h2 id="communicate-with-javascript-generate-raw-javascript">Generate raw JavaScript</h2>
 <p>It is possible to directly write JavaScript code from a Melange file. This is
 unsafe, but it can be useful for prototyping or as an escape hatch.</p>
@@ -1414,9 +1636,9 @@ let john_name = john.name
 
 var john_name = MySchool.john.name;
 </code></pre>
-<p>External functions are documented in the <a href="#communicate-with-javascript-foreign-function-interface">"Foreign function
-interface"</a> section. The <code>bs.module</code> attribute is
-documented <a href="#communicate-with-javascript-using-functions-from-other-javascript-modules">here</a>.</p>
+<p>External functions are documented in <a href="#communicate-with-javascript-external-functions">a previous section</a>.
+The <code>bs.module</code> attribute is documented
+<a href="#communicate-with-javascript-using-functions-from-other-javascript-modules">here</a>.</p>
 <p>If you want or need to use different field names on the Melange and the
 JavaScript sides, you can use the <code>bs.as</code> decorator:</p>
 <pre><code class="language-ocaml">type action = {
@@ -1800,14 +2022,11 @@ let el = get_by_id &quot;my-id&quot; document
 kind of API can be designed with Melange externals. Depending on which
 convention we want to use, there are two attributes available:</p>
 <ul>
-<li>For a data-first convention, the <code>bs.send</code> attribute, in combination with <a href="#communicate-with-javascript-todo-fix-me.md">the
+<li>For a data-first convention, the <code>bs.send</code> attribute, in combination with <a href="#communicate-with-javascript-pipe-first">the
   pipe first operator</a> <code>|.</code></li>
 <li>For a data-last convention, the <code>bs.send.pipe</code> attribute, in combination with
-  OCaml pipe last operator <code>|&gt;</code>.</li>
+  OCaml <a href="#communicate-with-javascript-pipe-last">pipe last operator</a> <code>|&gt;</code>.</li>
 </ul>
-<p>For further details about the differences in the conventions and the trade-offs,
-one can refer to <a href="https://www.javierchavarri.com/data-first-and-data-last-a-comparison/">this "Data-first and data-last" blog
-post</a>.</p>
 <p>Let’s see first an example of chaining using data-first convention with the pipe
 first operator <code>|.</code>:</p>
 <pre><code class="language-ocaml">(* Abstract type for the `document` global *)
@@ -1856,8 +2075,8 @@ var v = Path.join(&quot;a&quot;, &quot;b&quot;);
 <p>If more dynamism is needed, there is a way to inject elements with different
 types in the array and still have Melange compile to JavaScript values that are
 not wrapped using the OCaml
-<a href="https://v2.ocaml.org/manual/attributes.html"><code>unboxed</code></a> attribute, which is
-documented <a href="#communicate-with-javascript-todo-fix-me.md">in a section below</a>:</p>
+<a href="https://v2.ocaml.org/manual/attributes.html"><code>unboxed</code></a> attribute, which was
+mentioned <a href="#communicate-with-javascript-reusing-ocaml-attributes">in the OCaml attributes section</a>:</p>
 <pre><code class="language-ocaml">type hide = Hide : 'a -&gt; hide [@@unboxed]
 
 external join : hide array -&gt; string = &quot;join&quot; [@@bs.module &quot;path&quot;] [@@bs.splice]
@@ -2517,7 +2736,824 @@ function. For example, if we define <code>person</code> type as private:</p>
 </code></pre>
 <p>The accessors <code>nameGet</code> and <code>ageGet</code> will still be generated, but not the
 constructor <code>person</code>. This is useful when binding to JavaScript objects while
-preventing any Melange code from creating values of such type.</p></section><h1 class='nav-section-title-end'>Ended: Learn</h1>
+preventing any Melange code from creating values of such type.</p></section><section class="print-page" id="melange-for-x-developers"><h1 id="melange-for-x-developers-melange-for-x-developers">Melange for X developers</h1>
+<p>If you are familiar with other languages, here you will find sections that
+compare Melange to a few of them, so it might help you get up and running
+quickly. In particular:</p>
+<ul>
+<li>JavaScript</li>
+<li>TypeScript</li>
+<li>Js_of_ocaml</li>
+<li>ReScript</li>
+</ul>
+<h2 id="melange-for-x-developers-for-javascript-developers">For JavaScript developers</h2>
+<p>Melange is a thin layer over <a href="https://ocaml.org/">OCaml</a>, a strongly typed
+functional programming language with an emphasis on expressiveness and safety.
+Melange’s goal is to help web developers build and maintain JavaScript
+applications safely, thanks to OCaml expressive and powerful type system.</p>
+<p>Melange allows to build applications using either OCaml syntax or Reason syntax.
+If you don’t know which one to choose, we recommend
+<a href="https://reasonml.github.io/en/">Reason</a>, as it has been designed with
+JavaScript developers in mind.</p>
+<p>Reason has first-class support for
+<a href="https://reasonml.github.io/docs/en/jsx">JSX</a>, and there are bindings like
+<a href="https://github.com/reasonml/reason-react/">ReasonReact</a> that build on top of
+that functionality to provide a great developer experience.</p>
+<p>Another advantage is that programs written using Reason syntax are fully
+compatible with those written in OCaml syntax.</p>
+<p>Here is the cheat sheet with some equivalents between JavaScript and Reason
+syntaxes:</p>
+<h3 id="melange-for-x-developers-variable">Variable</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>const x = 5;</code></td>
+<td><code>let x = 5;</code></td>
+</tr>
+<tr>
+<td><code>var x = y;</code></td>
+<td>No equivalent</td>
+</tr>
+<tr>
+<td><code>let x = 5; x = x + 1;</code></td>
+<td><code>let x = ref(5); x := x^ + 1;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="melange-for-x-developers-string-character">String &amp; Character</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"Hello world!"</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>'Hello world!'</code></td>
+<td>Strings must use <code>"</code></td>
+</tr>
+<tr>
+<td>Characters are strings</td>
+<td><code>'a'</code></td>
+</tr>
+<tr>
+<td><code>"hello " + "world"</code></td>
+<td><code>"hello " ++ "world"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="melange-for-x-developers-boolean">Boolean</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>true</code>, <code>false</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>!true</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>&#124;&#124;</code>, <code>&amp;&amp;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&gt;</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>a === b</code>, <code>a !== b</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td>No deep equality (recursive compare)</td>
+<td><code>a == b</code>, <code>a != b</code></td>
+</tr>
+<tr>
+<td><code>a == b</code></td>
+<td>No equality with implicit casting</td>
+</tr>
+</tbody>
+</table>
+<h3 id="melange-for-x-developers-number">Number</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>3</code></td>
+<td>Same *</td>
+</tr>
+<tr>
+<td><code>3.1415</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>3 + 4</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>3.0 + 4.5</code></td>
+<td><code>3.0 +. 4.5</code></td>
+</tr>
+<tr>
+<td><code>5 % 3</code></td>
+<td><code>5 mod 3</code></td>
+</tr>
+</tbody>
+</table>
+<p>* JavaScript has no distinction between integer and float.</p>
+<h3 id="melange-for-x-developers-objectrecord">Object/Record</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no static types</td>
+<td><code>type point = {x: int, mutable y: int}</code></td>
+</tr>
+<tr>
+<td><code>{x: 30, y: 20}</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>point.x</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>point.y = 30;</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>{...point, x: 30}</code></td>
+<td>Same</td>
+</tr>
+</tbody>
+</table>
+<h3 id="melange-for-x-developers-array">Array</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[1, 2, 3]</code></td>
+<td><code>[&#124;1, 2, 3&#124;]</code></td>
+</tr>
+<tr>
+<td><code>myArray[1] = 10</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>[1, "Bob", true]</code> *</td>
+<td><code>(1, "Bob", true)</code></td>
+</tr>
+<tr>
+<td>No immutable list</td>
+<td><code>[1, 2, 3]</code></td>
+</tr>
+</tbody>
+</table>
+<p>* Tuples can be simulated in JavaScript with arrays, as JavaScript arrays can
+contain multiple types of elements.</p>
+<h3 id="melange-for-x-developers-null">Null</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null</code>, <code>undefined</code></td>
+<td><code>None</code> *</td>
+</tr>
+</tbody>
+</table>
+<p>* There are no nulls, nor null bugs in Reason. But it does have <a href="https://reasonml.github.io/docs/en/option">an option
+type</a> for when you actually need
+nullability.</p>
+<h3 id="melange-for-x-developers-function">Function</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>arg =&gt; retVal</code></td>
+<td><code>(arg) =&gt; retVal</code></td>
+</tr>
+<tr>
+<td><code>function named(arg) {...}</code></td>
+<td><code>let named = (arg) =&gt; ...</code></td>
+</tr>
+<tr>
+<td><code>const f = function(arg) {...}</code></td>
+<td><code>let f = (arg) =&gt; ...</code></td>
+</tr>
+<tr>
+<td><code>add(4, add(5, 6))</code></td>
+<td>Same</td>
+</tr>
+</tbody>
+</table>
+<h4 id="melange-for-x-developers-blocks">Blocks</h4>
+<table>
+  <thead>
+    <tr>
+      <th>JavaScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+  <pre><code>const myFun = (x, y) => {
+  const doubleX = x + x;
+  const doubleY = y + y;
+  return doubleX + doubleY
+};</code></pre>
+      </td>
+      <td>
+  <pre><code>let myFun = (x, y) => {
+  let doubleX = x + x;
+  let doubleY = y + y;
+  doubleX + doubleY
+};</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="melange-for-x-developers-currying">Currying</h4>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>let add = a =&gt; b =&gt; a + b</code></td>
+<td><code>let add = (a, b) =&gt; a + b</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both JavaScript and Reason support currying, but Reason currying is <strong>built-in
+and optimized to avoid intermediate function allocation and calls</strong>, whenever
+possible.</p>
+<h3 id="melange-for-x-developers-if-else">If-else</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>if (a) {b} else {c}</code></td>
+<td>Same *</td>
+</tr>
+<tr>
+<td><code>a ? b : c</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>switch</code></td>
+<td><code>switch</code> but <a href="https://reasonml.github.io/docs/en/pattern-matching">super-powered!</a></td>
+</tr>
+</tbody>
+</table>
+<p>* In Reason, conditionals are always expressions. Or in other words: the <code>else</code>
+branch is not optional.</p>
+<h3 id="melange-for-x-developers-destructuring">Destructuring</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>const {a, b} = data</code></td>
+<td><code>let {a, b} = data</code></td>
+</tr>
+<tr>
+<td><code>const [a, b] = data</code></td>
+<td><code>let [&#124;a, b&#124;] = data</code> *</td>
+</tr>
+<tr>
+<td><code>const {a: aa, b: bb} = data</code></td>
+<td><code>let {a: aa, b: bb} = data</code></td>
+</tr>
+</tbody>
+</table>
+<p>* This will cause the compiler to warn that not all cases are handled, because
+<code>data</code> could be of length other than 2. Better switch to pattern-matching
+instead.</p>
+<h3 id="melange-for-x-developers-loop">Loop</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>for (let i = 0; i &lt;= 10; i++) {...}</code></td>
+<td><code>for (i in 0 to 10) {...}</code></td>
+</tr>
+<tr>
+<td><code>for (let i = 10; i &gt;= 0; i--) {...}</code></td>
+<td><code>for (i in 10 downto 0) {...}</code></td>
+</tr>
+<tr>
+<td><code>while (true) {...}</code></td>
+<td>Same</td>
+</tr>
+</tbody>
+</table>
+<h3 id="melange-for-x-developers-jsx">JSX</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;Foo bar=1 baz="hi" onClick={bla} /&gt;</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>&lt;Foo bar=bar /&gt;</code></td>
+<td><code>&lt;Foo bar /&gt;</code> *</td>
+</tr>
+<tr>
+<td><code>&lt;input checked /&gt;</code></td>
+<td><code>&lt;input checked=true /&gt;</code></td>
+</tr>
+<tr>
+<td>No children spread</td>
+<td><code>&lt;Foo&gt;...children&lt;/Foo&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>* Note the argument punning when creating elements.</p>
+<h3 id="melange-for-x-developers-exception">Exception</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>throw new SomeError(...)</code></td>
+<td><code>raise(SomeError(...))</code></td>
+</tr>
+<tr>
+<td><code>try {a} catch (Err) {...} finally {...}</code></td>
+<td><code>try (a) { &#124; Err =&gt; ...}</code> *</td>
+</tr>
+</tbody>
+</table>
+<p>* No finally.</p>
+<h3 id="melange-for-x-developers-blocks_1">Blocks</h3>
+<p>In Reason, "sequence expressions" are created with <code>{}</code> and evaluate to their
+last statement. In JavaScript, this can be simulated via an immediately-invoked
+function expression (since function bodies have their own local scope).</p>
+<table>
+  <thead>
+    <tr>
+      <th>JavaScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+  <pre><code>let res = (function() {
+  const x = 23;
+  const y = 34;
+  return x + y;
+})();</code></pre>
+      </td>
+      <td>
+  <pre><code>let res = {
+  let x = 23;
+  let y = 34;
+  x + y
+};</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="melange-for-x-developers-comments">Comments</h3>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/* Comment */</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>// Line comment</code></td>
+<td>Same</td>
+</tr>
+</tbody>
+</table>
+<h2 id="melange-for-x-developers-for-typescript-developers">For TypeScript developers</h2>
+<p>The approach to typing applications using Melange differs somewhat from
+TypeScript. TypeScript has been designed with a focus on compatibility with
+JavaScript, as outlined in its <a href="https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals">design
+goals</a>. On
+the other hand, Melange is built upon OCaml, a compiler known for its emphasis
+on expressiveness and safety.</p>
+<p>These are some of the differences between both.</p>
+<h3 id="melange-for-x-developers-type-inference">Type inference</h3>
+<p>In TypeScript, the types for the input parameters have to be defined:</p>
+<pre><code class="language-javascript">let sum = (a: number, b: number) =&gt; a + b;
+</code></pre>
+<p>OCaml can infer types without barely any type annotations. For example, we can
+define a function that adds two numbers as:</p>
+<pre><code class="language-ocaml">let add x y = x + y
+</code></pre>
+<h3 id="melange-for-x-developers-algebraic-data-types">Algebraic data types</h3>
+<p>It is not possible to build an ADT in TypeScript the same way as in OCaml.
+<a href="https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-func.html#discriminated-unions">Discriminated
+unions</a>
+would be the closest analog to them, with libraries like
+<a href="https://github.com/gvergnaud/ts-pattern">ts-pattern</a> as an alternative to the
+lack of support for pattern matching in the language.</p>
+<p>In OCaml, <a href="https://cs3110.github.io/textbook/chapters/data/algebraic_data_types.html">algebraic data types
+(ADTs)</a>
+are a commonly used functionality of the language. They allow you to build your
+own types from small blocks. And with <a href="https://ocaml.org/docs/data-types">pattern
+matching</a>, it is easy to access this data.</p>
+<h3 id="melange-for-x-developers-nominal-typing">Nominal typing</h3>
+<p>In TypeScript, all typing is structural. This means that it is hard sometimes to
+establish a boundary or separation between two types that have the same
+implementation. For these cases, nominal typing can be emulated using tags:</p>
+<pre><code class="language-js">type Email = string &amp; { readonly __tag: unique symbol };
+type City = string &amp; { readonly __tag: unique symbol };
+</code></pre>
+<p>In OCaml, nominal typing is fully supported. Some of the core language types
+like <a href="https://v2.ocaml.org/manual/coreexamples.html#s%3Atut-recvariants">records and
+variants</a> are
+nominal. This means that even if you declare exactly the same type twice,
+functions that operate on values from one type will not be compatible with the
+other type.</p>
+<p>There is also structural typing, used for OCaml
+<a href="https://v2.ocaml.org/manual/objectexamples.html">objects</a> and <a href="https://v2.ocaml.org/manual/polyvariant.html">polymorphic
+variants</a>.</p>
+<h3 id="melange-for-x-developers-immutability">Immutability</h3>
+<p>TypeScript has two base primitives to work with immutability: <code>const</code> and
+<code>readonly</code>.</p>
+<p>The first one is used to prevent variable reference change.</p>
+<pre><code class="language-js">const a = 1;
+a = 2; // Error: Cannot assign to 'a' because it is a constant.
+</code></pre>
+<p>And the second one is used to make properties immutable.</p>
+<pre><code class="language-js">type A = {
+  readonly x: number;
+}
+const a: A = { x: 1 };
+a.x = 12; // Error: Cannot assign to 'x' because it is a read-only property.
+</code></pre>
+<p>Nevertheless, there are some problems here. <code>const</code> and <code>readonly</code> only block
+reference changes but do nothing about values. With <code>const a = [1, 2, 3]</code> or
+<code>readonly x: number[]</code>, you can still change the contents of an array.</p>
+<p>OCaml provides data types with immutability in mind, like lists, records, or
+maps.</p>
+<h3 id="melange-for-x-developers-strictness-and-soundness">Strictness and soundness</h3>
+<p>TypeScript you can use types like <code>any</code>, or other extensive types like
+<code>Function</code>. This can be mitigated using the <code>strict</code> option in the
+<code>tsconfig.json</code>. There is no such option in OCaml.</p>
+<p>TypeScript may sacrifice soundness for practicality when needed, like mentioned
+in <a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness">the
+handbook</a>.
+OCaml implementations provide methods like <code>Obj.magic</code> and <a href="#communicate-with-javascript-special-identity-external">the <code>identity</code>
+primitive</a>, but they
+are more normally discouraged.</p>
+<h3 id="melange-for-x-developers-cheatsheet">Cheatsheet</h3>
+<p>The following are some conversions between TypeScript and OCaml idioms, in the
+OCaml side we use Reason syntax for familiarity, as mentioned in <a href="#melange-for-x-developers-for-javascript-developers">section for
+JavaScript developers</a>.</p>
+<h4 id="melange-for-x-developers-type-aliases">Type aliases</h4>
+<table>
+<thead>
+<tr>
+<th>TypeScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type Email = string;</code></td>
+<td><code>type email = string;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="melange-for-x-developers-abstract-types">Abstract types</h4>
+<table>
+  <thead>
+    <tr>
+      <th>TypeScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre><code>type Email = string &
+{ readonly __tag: unique symbol };</code></pre>
+      </td>
+      <td>
+        <pre><code>/* in interface `rei` file */
+type email;
+</code></pre>
+        <pre><code>/* in implementation `re` file */
+type email = string;</code></pre> </td> </tr>
+  </tbody>
+</table>
+
+<h4 id="melange-for-x-developers-union-types-variants">Union types / Variants</h4>
+<table>
+  <thead>
+    <tr>
+      <th>TypeScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre><code>type Result = "Error" | "Success";
+</code></pre>
+      </td>
+      <td>
+        <pre><code>type result = Error | Success</code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre><code>type Result =
+| { type: "Error"; message: string }
+| { type: "Success"; n: number };
+</code></pre>
+      </td>
+      <td>
+        <pre><code>type result =
+| Error of string
+| Success of int</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="melange-for-x-developers-immutability_1">Immutability</h4>
+<table>
+  <thead>
+    <tr>
+      <th>TypeScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre><code>const a = 1;
+type A = { readonly x: number };
+type ImmutableA = Readonly<A>;
+const arr: ReadonlyArray<number> = [1, 2, 3];
+type A = { readonly [x: string]: number };
+</code></pre>
+      </td>
+      <td>Enabled by default</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="melange-for-x-developers-currying_1">Currying</h4>
+<table>
+  <thead>
+    <tr>
+      <th>TypeScript</th>
+      <th>OCaml (Reason syntax)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre><code>type addT = (_: number) => (_: number) => number;
+const add: addT = (l) => (r) => l + r;
+add(5)(3);
+</code></pre>
+      </td>
+      <td>Enabled by default</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="melange-for-x-developers-parametric-polymorphism">Parametric polymorphism</h4>
+<table>
+<thead>
+<tr>
+<th>TypeScript</th>
+<th>OCaml (Reason syntax)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type length = &lt;T&gt;(_: T[]) =&gt; number;</code></td>
+<td><code>let length: list('a) =&gt; int;</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="melange-for-x-developers-for-js_of_ocaml-developers">For Js_of_ocaml developers</h2>
+<p>There are many similarities between Js_of_ocaml and Melange:</p>
+<ul>
+<li>Both compile OCaml to JavaScript.</li>
+<li>Both are available as libraries in the official opam repository.</li>
+<li>Both have access to the OCaml platform developer toolchain: the OCaml LSP
+  server, Merlin, and the different editor extensions.</li>
+<li>Both have implemented extensive integration with Dune.</li>
+</ul>
+<p>However, while Js_of_ocaml transforms OCaml bytecode into JavaScript, Melange
+starts the conversion process earlier in the compiler pipeline, as it transforms
+the compiler lambda representation into JavaScript.</p>
+<p>Js_of_ocaml is a project with years of development and evolution behind it,
+while Melange <a href="#rationale-a-bit-of-history">appearance</a> is relatively recent
+in comparison.</p>
+<p>These aspects translate into different trade-offs. Compared to Js_of_ocaml:</p>
+<ul>
+<li>Melange can be installed in an OCaml 5 opam switch, but the editor integration
+  is not working at the time (May 2023).</li>
+<li>Similarly, any OCaml 5 features like effects are currently unsupported in
+  Melange.</li>
+<li>Js_of_ocaml allows to compile the compiler itself and create "toplevels",
+  which is not possible with Melange.</li>
+<li><code>Marshal</code> is well supported in Js_of_ocaml, while Melange does not support it.</li>
+<li>Libraries like <code>Unix</code> or <code>Str</code> are available in Js_of_ocaml but not in
+  Melange.</li>
+<li>Js_of_ocaml supports sourcemaps, which Melange do not support yet (as of May
+  2023).</li>
+</ul>
+<p>On the upside, in Melange:</p>
+<ul>
+<li>Consuming existing JavaScript packages might be a bit easier in Melange,
+  thanks to its compilation model and the extensive availability of mechanisms
+  to bind to JavaScript code.</li>
+<li>There is great support for some of the most used JavaScript libraries like
+  <a href="https://github.com/reasonml/reason-react/">ReactJS</a> or GraphQL clients.</li>
+<li>The generated JavaScript bundles are generally smaller.</li>
+<li>The generated JavaScript code is generally more readable.</li>
+<li>Straight-forward integration with modern JavaScript tooling like Webpack,
+  NextJS, etc. This is possible thanks to the 1 module &lt;-&gt; 1 JavaScript file
+  compilation model.</li>
+</ul>
+<h2 id="melange-for-x-developers-for-rescript-developers">For ReScript developers</h2>
+<p>As a project that shares a common ancestry with ReScript, Melange inherits a lot
+of its characteristics:</p>
+<ul>
+<li>The compilation model involves compiling a single module into a single
+  JavaScript file.</li>
+<li>The libraries provided by ReScript (Belt and Js) are available in Melange too.</li>
+<li>The mechanisms provided for <a href="#communicate-with-javascript">communicating with JavaScript
+  code</a> are mostly the same.</li>
+</ul>
+<p>However, one of Melange’s goals is to maximize compatibility with the OCaml
+ecosystem. This goal translates into fundamental differences in how Melange and
+ReScript function from the perspective of both library authors and users.</p>
+<h3 id="melange-for-x-developers-package-manager">Package manager</h3>
+<p>ReScript projects rely exclusively on npm for all packages they depend on.
+Melange projects, on the other hand, will use opam for native packages, and npm
+for JavaScript ones. Melange package management is explained in detail in <a href="#package-management">the
+dedicated section</a>.</p>
+<h3 id="melange-for-x-developers-build-system">Build system</h3>
+<p>ReScript has its own build system, originally based on Ninja.</p>
+<p>Melange defers to <a href="https://dune.build/">Dune</a> for build orchestration, as it is
+explained in detail in <a href="#build-system">the corresponding section</a>. By
+integrating with Dune, Melange can benefit from the multiple features provided.
+One of the most useful features is first-class supports for monorepos. But there
+are multiple others, like virtual libraries, watch mode, or integrations with
+tools like <a href="https://github.com/ocaml/odoc">odoc</a>.</p>
+<p>The divergences caused by the different build systems have a lot of implications
+and nuances that might be too complex to explain in this section, but some of
+the specific details have been discussed in <a href="https://discuss.ocaml.org/t/ahrefs-is-now-built-with-melange/12107/3">the OCaml
+forum</a>.</p>
+<h3 id="melange-for-x-developers-source-based-vs-pre-built-distribution">Source-based vs pre-built distribution</h3>
+<p>While with ReScript every dependency can be downloaded with just npm, Melange
+projects will have to use opam and npm. This is a trade-off: on one hand, some
+Melange projects might need to include two package configuration files. But on
+the other hand they can benefit from opam’s source-based package distribution
+model for things like PPXs, linters, or any other OCaml tooling.</p>
+<p>In comparison, consuming any OCaml tool in ReScript is more challenging. Since
+ReScript lacks a native toolchain, authors of the tools need to provide
+pre-built binaries for all the supported systems and architectures. This poses
+difficulties for the authors in terms of maintenance, and it can also result in
+certain users being unable to access these tools if their systems or
+architectures are not included in the pre-built binaries.</p>
+<h3 id="melange-for-x-developers-ocaml-compiler-version">OCaml compiler version</h3>
+<p>ReScript is compatible with the 4.06 version of the OCaml compiler, while
+Melange is compatible with the version 4.14 (as of May 2023).</p>
+<p>The (Melange roadmap)[todo-fix-me.md] includes a milestone to upgrade to the
+latest version of the compiler to the 5.x release line.</p>
+<h3 id="melange-for-x-developers-editor-integration">Editor integration</h3>
+<p>Melange is fully compatible with the <a href="https://ocaml.org/docs/up-and-running#configuring-your-editor">OCaml platform editor
+tools</a>, which
+makes possible to work in projects that include OCaml and Melange code using the
+same editor configuration.</p>
+<p>ReScript has its <a href="https://rescript-lang.org/docs/manual/latest/editor-plugins">own set of editor
+plugins</a>.</p>
+<h3 id="melange-for-x-developers-feature-choice-and-alignment-with-ocaml">Feature choice and alignment with OCaml</h3>
+<p>ReScript’s goal is to model the language to bring it as close to JavaScript as
+possible. From the website <a href="https://rescript-lang.org/docs/manual/latest/introduction">introduction
+section</a>:</p>
+<blockquote>
+<p>ReScript looks like JS, acts like JS, and compiles to the highest quality of
+clean, readable and performant JS (...)</p>
+</blockquote>
+<p>New features added to ReScript might close its alignment with JavaScript, but
+some of these features can lead to greater divergence from OCaml. As Melange
+prioritizes compatibility with OCaml, it avoids incorporating those features
+that widen the gap between the two.</p>
+<p>Here is a non-exhaustive list of the features that ReScript has added and will
+not be supported in Melange:</p>
+<ul>
+<li>The <code>async</code> / <code>await</code> syntax: similar functionality can be achieved in Melange
+  through the usage of <a href="https://v2.ocaml.org/manual/bindingops.html">binding
+  operators</a> (introduced in OCaml
+  4.13).</li>
+<li>Optional fields in records, like <code>type t = { x : int, @optional y : int }</code>.</li>
+<li>Uncurried by default.</li>
+</ul>
+<p>The restriction above only applies to features that compromise compatibility
+with OCaml, but otherwise Melange can incorporate bugfixes or new functionality
+from ReScript.</p>
+<p>On the other hand, as Melange goal is to keep up with the version of the OCaml
+compiler, there are features inherited from OCaml that are not supported by
+ReScript at the moment (May 2023), for example:</p>
+<ul>
+<li><a href="https://v2.ocaml.org/manual/bindingops.html">Binding operators</a> / <code>let</code>
+  bindings</li>
+<li>Better type errors for some specific cases</li>
+<li>Additions to the stdlib</li>
+</ul>
+<p>The whole list of changes added to the OCaml compiler can be checked
+<a href="https://ocaml.org/releases">here</a>.</p>
+<h3 id="melange-for-x-developers-syntax">Syntax</h3>
+<p>ReScript encourages using <a href="https://rescript-lang.org/docs/manual/latest/migrate-from-bucklescript-reason">the new
+syntax</a>
+for any new code. While OCaml syntax might be supported today, its usage is not
+documented. Reason syntax is no longer supported.</p>
+<p>Melange supports and documents both Reason and OCaml syntaxes. It also includes
+a best-effort support for ReScript syntax for backwards compatibility, provided
+through the <code>rescript-syntax</code> package, available <a href="#melange-for-x-developers-todo-fix-me.md">in opam</a>. To
+build any code written using ReScript syntax, the only requirement is to
+download this package, as Melange and Dune will already coordinate to make use
+of it when <code>res</code> or <code>resi</code> files are found.</p></section><h1 class='nav-section-title-end'>Ended: Learn</h1>
                         <h1 class='nav-section-title' id='section-reference'>
                             Reference <a class='headerlink' href='#section-reference' title='Permanent link'>↵</a>
                         </h1>
@@ -2578,7 +3614,7 @@ the same project without issues.</p></section><h1 class='nav-section-title-end'>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
         <span>
-          <a href="https://github.com/melange-re/documentation-site/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/melange-re/melange-re.github.io/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
         </span>
     
     
